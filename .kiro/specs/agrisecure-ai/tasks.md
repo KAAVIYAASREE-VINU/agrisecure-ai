@@ -1,6 +1,6 @@
 # Implementation Plan
 
-MVP tasks come first. Stop at the end of each top-level task, run `pytest`, and add a summary to `docs/phase-notes.md`.
+MVP tasks come first. At the end of each top-level task, run pytest -q. Do not write phase notes or summaries.
 
 - [x] 1. Project setup [MVP]
   - [x] 1.1 Create folder structure, `requirements.txt` (streamlit, pandas, pytest), `.gitignore` (include `.env`), `.env.example`, `README.md`
@@ -47,7 +47,7 @@ MVP tasks come first. Stop at the end of each top-level task, run `pytest`, and 
     - _Requirements: 1.1, 1.2_
   - [x] 6.2 Input screen: state, season, crop icon cards, land stepper, Calculate enable and disable
     - _Requirements: 2.1 to 2.5_
-  - [ ] 6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window
+  - [ x] 6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window
     - _Requirements: 3, 4, 5, 7_
   - [ ] 6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, "Why this number?" expanders, loan disclaimer
     - _Requirements: 6, 8, 9, G4, G5_
