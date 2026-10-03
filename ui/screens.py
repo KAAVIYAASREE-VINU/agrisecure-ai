@@ -765,7 +765,259 @@ def show_results_screen() -> None:
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
     # -----------------------------------------------------------------------
-    # 6. Footer
+    # 6. Lender comparison chart
+    # -----------------------------------------------------------------------
+    import core.comparator as comparator
+    import pandas as pd
+
+    st.markdown(
+        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"🏦 {t('lender_comparison_header', lang)}</h3>",
+        unsafe_allow_html=True,
+    )
+
+    # Default months to 6 when harvest window is None
+    months_for_comparison = months if months is not None else 6
+
+    if gap > 0:
+        lender_costs = comparator.interest_costs(
+            principal=gap,
+            months=months_for_comparison,
+            moneylender_rate=results.get("moneylender_rate"),
+        )
+        moneylender_cost = lender_costs["moneylender"]
+        bank_cost = lender_costs["bank"]
+        kcc_cost = lender_costs["kcc"]
+
+        # Build DataFrame for bar chart
+        chart_data = pd.DataFrame(
+            {
+                t("lender_moneylender", lang): [moneylender_cost],
+                t("lender_bank", lang): [bank_cost],
+                t("lender_kcc", lang): [kcc_cost],
+            }
+        )
+        st.bar_chart(chart_data)
+
+        col_lbl, col_val = st.columns([3, 2])
+        with col_lbl:
+            st.write(f"💸 {t('extra_moneylender_cost', lang)}")
+        with col_val:
+            st.markdown(
+                f"<div style='text-align:right; font-weight:700; font-size:1.05rem; color:#c0392b;'>"
+                f"{indian_format(moneylender_cost - kcc_cost)}</div>",
+                unsafe_allow_html=True,
+            )
+    else:
+        st.success(f"🟢 {t('funding_gap_label', lang)}: {indian_format(0)} — " + t("error_no_data", lang).split(".")[0])
+        # gap = 0 → no loan needed, set costs to 0 for downstream use
+        kcc_cost = 0.0
+
+    with st.expander("❓ " + t("why_lender_comparison", lang)):
+        st.write(t("why_lender_comparison_text", lang))
+
+    st.caption(t("disclaimer_loans", lang))
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 7. Risk meter (DSCR)
+    # -----------------------------------------------------------------------
+    import math as _math
+    import core.risk as risk_module
+    import core.crops as crops_module
+
+    st.markdown(
+        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"📊 {t('risk_meter_header', lang)}</h3>",
+        unsafe_allow_html=True,
+    )
+
+    df_yp_risk = _load_yield_price()
+    df_msp_risk = _load_msp()
+
+    _scenarios_for_dscr = crops_module.profit_scenarios(
+        crop=crop,
+        state=state,
+        season=season,
+        land_acres=acres,
+        df_yield_price=df_yp_risk,
+        df_msp=df_msp_risk,
+        cost_override=computed_total,
+    )
+
+    # normal_harvest_income = revenue_total from the "normal" scenario
+    _normal_scenario = next(
+        (s for s in _scenarios_for_dscr["scenarios"] if s["label"] == "normal"),
+        None,
+    )
+    normal_harvest_income = (
+        _normal_scenario["revenue_total"] if _normal_scenario is not None else 0.0
+    )
+
+    # repayment_obligation = gap (principal) + kcc interest
+    kcc_cost_for_dscr = kcc_cost if gap > 0 else 0.0
+    repayment_obligation = gap + kcc_cost_for_dscr
+
+    dscr_value = risk_module.dscr(normal_harvest_income, repayment_obligation)
+    dscr_colour_val = risk_module.dscr_colour(dscr_value)
+
+    _DSCR_DOTS = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
+    _DSCR_RISK_LABELS = {
+        "green": "risk_low",
+        "yellow": "risk_medium",
+        "red": "risk_high",
+    }
+
+    if dscr_value == _math.inf:
+        st.markdown(
+            "<div style='background:#e8f5e9; border-radius:0.6rem; padding:0.7rem 1rem;'>"
+            "🟢 No loan — safe</div>",
+            unsafe_allow_html=True,
+        )
+    else:
+        colour_dot = _DSCR_DOTS.get(dscr_colour_val or "red", "🔴")
+        risk_lbl = t(_DSCR_RISK_LABELS.get(dscr_colour_val or "red", "risk_unknown"), lang)
+        col_dscr_lbl, col_dscr_val = st.columns([3, 2])
+        with col_dscr_lbl:
+            st.write(f"{colour_dot} DSCR — {risk_lbl}")
+        with col_dscr_val:
+            st.markdown(
+                f"<div style='text-align:right; font-weight:700; font-size:1.1rem;'>"
+                f"{dscr_value:.2f}</div>",
+                unsafe_allow_html=True,
+            )
+
+    with st.expander("❓ " + t("why_dscr", lang)):
+        st.write(t("why_dscr_text", lang))
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 8. Profit scenarios
+    # -----------------------------------------------------------------------
+    st.markdown(
+        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"📈 {t('profit_scenarios_header', lang)}</h3>",
+        unsafe_allow_html=True,
+    )
+
+    df_yp_ps = _load_yield_price()
+    df_msp_ps = _load_msp()
+
+    ps_result = crops_module.profit_scenarios(
+        crop=crop,
+        state=state,
+        season=season,
+        land_acres=acres,
+        df_yield_price=df_yp_ps,
+        df_msp=df_msp_ps,
+        cost_override=computed_total,
+    )
+
+    if ps_result["no_data"]:
+        st.error(t("error_no_data", lang))
+    else:
+        if ps_result["low_data"]:
+            st.warning(t("placeholder_notice", lang))
+
+        _SCENARIO_LABELS = {
+            "bad": t("bad_harvest", lang),
+            "normal": t("normal_harvest", lang),
+            "good": t("good_harvest", lang),
+        }
+        _SCENARIO_ICONS = {"bad": "🔴", "normal": "🟡", "good": "🟢"}
+
+        for scenario in ps_result["scenarios"]:
+            lbl = scenario["label"]
+            icon = _SCENARIO_ICONS.get(lbl, "•")
+            display_label = _SCENARIO_LABELS.get(lbl, lbl)
+            revenue = indian_format(scenario["revenue_total"])
+            profit_val = scenario["profit_total"]
+            profit_str = indian_format(profit_val) if profit_val is not None else "—"
+            profit_colour = "#27ae60" if (profit_val or 0) >= 0 else "#c0392b"
+
+            st.markdown(
+                f"<div style='border:1px solid #ddd; border-radius:0.6rem; "
+                f"padding:0.6rem 0.8rem; margin-bottom:0.4rem; background:#fafafa;'>"
+                f"<span style='font-weight:700;'>{icon} {display_label}</span><br>"
+                f"<span style='font-size:0.9rem; color:#555;'>Revenue: <strong>{revenue}</strong> "
+                f"&nbsp;|&nbsp; Profit: "
+                f"<strong style='color:{profit_colour};'>{profit_str}</strong></span>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+
+    with st.expander("❓ " + t("why_profit", lang)):
+        st.write(t("why_profit_text", lang))
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 9. Break-even vs MSP
+    # -----------------------------------------------------------------------
+    st.markdown(
+        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"⚖️ {t('breakeven_header', lang)}</h3>",
+        unsafe_allow_html=True,
+    )
+
+    # Use the normal scenario yield for break-even calculation
+    _be_normal = next(
+        (s for s in ps_result["scenarios"] if s["label"] == "normal"),
+        None,
+    ) if not ps_result.get("no_data") else None
+
+    if _be_normal is not None and acres > 0:
+        normal_yield_per_acre = _be_normal["yield_per_acre"]
+        total_cost_per_acre = computed_total / acres
+        try:
+            be_price = crops_module.break_even_price(
+                total_cost_per_acre=total_cost_per_acre,
+                yield_per_acre=normal_yield_per_acre,
+            )
+            col_be_lbl, col_be_val = st.columns([3, 2])
+            with col_be_lbl:
+                st.write(f"⚖️ {t('breakeven_header', lang)} (₹/quintal)")
+            with col_be_val:
+                st.markdown(
+                    f"<div style='text-align:right; font-weight:700; font-size:1.05rem;'>"
+                    f"{indian_format(be_price)}</div>",
+                    unsafe_allow_html=True,
+                )
+
+            # MSP comparison
+            if ps_result.get("msp_available") and ps_result["msp"] is not None:
+                msp_val = ps_result["msp"]
+                if be_price <= msp_val:
+                    st.markdown(
+                        f"<div style='background:#e8f5e9; border-radius:0.6rem; "
+                        f"padding:0.5rem 0.8rem; margin-top:0.4rem; color:#1e8449;'>"
+                        f"✅ Break-even {indian_format(be_price)} &lt; MSP {indian_format(msp_val)} → Safe</div>",
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.markdown(
+                        f"<div style='background:#fdf2f8; border-radius:0.6rem; "
+                        f"padding:0.5rem 0.8rem; margin-top:0.4rem; color:#c0392b;'>"
+                        f"⚠️ Break-even {indian_format(be_price)} &gt; MSP {indian_format(msp_val)} → Risky</div>",
+                        unsafe_allow_html=True,
+                    )
+        except ValueError:
+            st.warning(t("error_zero_yield", lang))
+    else:
+        st.info(t("error_no_data", lang))
+
+    with st.expander("❓ " + t("why_breakeven", lang)):
+        st.write(t("why_breakeven_text", lang))
+
+    with st.expander("❓ " + t("why_msp", lang)):
+        st.write(t("why_msp_text", lang))
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 10. Footer
     # -----------------------------------------------------------------------
     st.markdown("<hr style='margin:1rem 0 0.5rem 0;'>", unsafe_allow_html=True)
     st.caption(t("footer_data_note", lang))

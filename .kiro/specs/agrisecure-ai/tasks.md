@@ -49,7 +49,7 @@ MVP tasks come first. At the end of each top-level task, run pytest -q. Do not w
     - _Requirements: 2.1 to 2.5_
   - [ x] 6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window
     - _Requirements: 3, 4, 5, 7_
-  - [ ] 6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, "Why this number?" expanders, loan disclaimer
+  - [x] 6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, "Why this number?" expanders, loan disclaimer
     - _Requirements: 6, 8, 9, G4, G5_
   - [ ] 6.5 What-if buttons and Reset with side-by-side view
     - _Requirements: 10_
