@@ -1,0 +1,440 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create folder structure, `requirements.txt` (streamlit, pandas, pytest), `.gitignore` (include `.env`), `.env.example`, `README.md`": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378000
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034388587
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791040686068
+      }
+    ],
+    "1.2 Create `config.py` with all assumptions, each with a source note and last-verified date": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378062
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791040691331
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791040834106
+      }
+    ],
+    "2.1 Document dataset sources in `data/clean_data.py` header and list the files I must download manually": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378094
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791040843274
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791041071463
+      }
+    ],
+    "2.2 Write cleaning script: strip Season whitespace, standardise crop names, tag estimates as `PLACEHOLDER – verify`, output `cost.csv`, `yield_price.csv`, `msp.csv`": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378122
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791041080339
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044178909
+      }
+    ],
+    "2.3 Write `core/data_loader.py` with `validate_row` (raise `ValueError` for null or negative)": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378153
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044182621
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044370961
+      }
+    ],
+    "2.4 Write tests for cleaning and validation": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378178
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044375644
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044623307
+      }
+    ],
+    "3.1 `core/formatting.py`: `indian_format`, `acres_cents`, with tests": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378201
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044633153
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044841088
+      }
+    ],
+    "3.2 `core/costs.py`: `estimate_costs` with overrides and range checks, with tests": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378221
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044847309
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791045180092
+      }
+    ],
+    "3.3 `core/crops.py`: `available_crops`, `profit_scenarios`, `profit_range_per_acre`, `break_even_price`, with tests (fewer than 4 rows, missing MSP)": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378248
+      },
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791045185882
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791045912058
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791045921081
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791046283192
+      }
+    ],
+    "3.4 `core/risk.py`: `cv_risk_colour`, `dscr`, `dscr_colour`, with tests (zero obligation, thresholds)": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378280
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791046293376
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791046730738
+      }
+    ],
+    "3.5 `core/loans.py`: `funding_gap`, `institutional_loan_limit`, `residual_gap`, `harvest_window`, with tests (loan larger than need, missing duration)": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378309
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791046741525
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047353825
+      }
+    ],
+    "3.6 `core/comparator.py`: `interest_costs` for moneylender, bank, KCC, with rate range validation and tests": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378338
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047364844
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047510415
+      }
+    ],
+    "3.7 `core/crops.py`: `rank_top3` combining profit and risk": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378368
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047520888
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047834147
+      }
+    ],
+    "4. Checkpoint: run `pytest`, fix failures, write phase note": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378396
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047845857
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048080314
+      }
+    ],
+    "5.1 Create `lang/en.json` with all keys from design.md, then `ta.json` and `hi.json`": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378438
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048092003
+      }
+    ],
+    "5.2 `ui/i18n.py`: `t(key)` with English fallback and warning, with tests": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378460
+      }
+    ],
+    "6.1 Language picker screen with session state": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378484
+      }
+    ],
+    "6.2 Input screen: state, season, crop icon cards, land stepper, Calculate enable and disable": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378508
+      }
+    ],
+    "6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378538
+      }
+    ],
+    "6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, \"Why this number?\" expanders, loan disclaimer": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378571
+      }
+    ],
+    "6.5 What-if buttons and Reset with side-by-side view": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378603
+      }
+    ],
+    "6.6 Mobile layout and big-button CSS, check at 360 px": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378633
+      }
+    ],
+    "7. Checkpoint: run app and `pytest`, test with 2 realistic scenarios, write phase note": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378663
+      }
+    ],
+    "8.1 `core/schemes.py` eligibility rules and scheme text in language files": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378693
+      }
+    ],
+    "8.2 Scheme cards UI with greyed ineligible cards and \"Learn more\" links": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378725
+      }
+    ],
+    "8.3 Preset question buttons answered from session results": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378758
+      }
+    ],
+    "9.1 `voice/tts.py` with cache, 10-second timeout, language codes for Tamil and Hindi": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378787
+      }
+    ],
+    "9.2 Speaker button using `st.audio`, text fallback on failure": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378817
+      }
+    ],
+    "10.1 `st.cache_data` for CSV loading, loading indicators": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378846
+      }
+    ],
+    "11. Checkpoint: write 5 farmer test scenarios with expected outputs in `docs/phase-notes.md`": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378875
+      }
+    ],
+    "12.1 `core/guardrail.py` `check_numbers` handling Indian formats, lakh/crore, Tamil and Devanagari digits, with tests": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378923
+      }
+    ],
+    "12.2 LLM wrapper with optional API key and preset fallback, typed input only": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378949
+      }
+    ],
+    "13.1 WhatsApp text export from session results": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034378975
+      }
+    ],
+    "13.2 Feedback logging button": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034379003
+      }
+    ],
+    "13.3 Voice input with transcript confirmation and typing fallback": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034379031
+      }
+    ],
+    "14.1 Deploy to a free host (verify current free-tier limits), set secrets in host settings": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034379062
+      }
+    ],
+    "14.2 Write `docs/assumptions.md`, architecture diagram, 15 viva questions with answers, field-test sheet": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791034379091
+      }
+    ],
+    "1. Project setup [MVP]": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791040834154
+      }
+    ],
+    "2. Data preparation [MVP]": [
+      {
+        "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791044623343
+      }
+    ],
+    "3. Core calculations [MVP]": [
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791047834209
+      }
+    ]
+  }
+}
