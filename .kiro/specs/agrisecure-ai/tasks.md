@@ -36,63 +36,63 @@ MVP tasks come first. Stop at the end of each top-level task, run `pytest`, and 
 
 - [x] 4. Checkpoint: run `pytest`, fix failures, write phase note
 
-- [ ] 5. Language files and i18n [MVP]
-  - [-] 5.1 Create `lang/en.json` with all keys from design.md, then `ta.json` and `hi.json`
+- [x] 5. Language files and i18n [MVP]
+  - [x] 5.1 Create `lang/en.json` with all keys from design.md, then `ta.json` and `hi.json`
     - _Requirements: 1.1, 1.2, G1_
-  - [~] 5.2 `ui/i18n.py`: `t(key)` with English fallback and warning, with tests
+  - [x] 5.2 `ui/i18n.py`: `t(key)` with English fallback and warning, with tests
     - _Requirements: G1_
 
 - [ ] 6. Streamlit UI, MVP screens [MVP]
-  - [~] 6.1 Language picker screen with session state
+  - [x] 6.1 Language picker screen with session state
     - _Requirements: 1.1, 1.2_
-  - [~] 6.2 Input screen: state, season, crop icon cards, land stepper, Calculate enable and disable
+  - [x] 6.2 Input screen: state, season, crop icon cards, land stepper, Calculate enable and disable
     - _Requirements: 2.1 to 2.5_
-  - [~] 6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window
+  - [ ] 6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window
     - _Requirements: 3, 4, 5, 7_
-  - [~] 6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, "Why this number?" expanders, loan disclaimer
+  - [ ] 6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, "Why this number?" expanders, loan disclaimer
     - _Requirements: 6, 8, 9, G4, G5_
-  - [~] 6.5 What-if buttons and Reset with side-by-side view
+  - [ ] 6.5 What-if buttons and Reset with side-by-side view
     - _Requirements: 10_
-  - [~] 6.6 Mobile layout and big-button CSS, check at 360 px
+  - [ ] 6.6 Mobile layout and big-button CSS, check at 360 px
     - _Requirements: G6, 18.3_
 
-- [~] 7. Checkpoint: run app and `pytest`, test with 2 realistic scenarios, write phase note
+- [ ] 7. Checkpoint: run app and `pytest`, test with 2 realistic scenarios, write phase note
 
 - [ ] 8. Schemes and presets [NEXT]
-  - [~] 8.1 `core/schemes.py` eligibility rules and scheme text in language files
+  - [ ] 8.1 `core/schemes.py` eligibility rules and scheme text in language files
     - _Requirements: 11_
-  - [~] 8.2 Scheme cards UI with greyed ineligible cards and "Learn more" links
+  - [ ] 8.2 Scheme cards UI with greyed ineligible cards and "Learn more" links
     - _Requirements: 11.1 to 11.3_
-  - [~] 8.3 Preset question buttons answered from session results
+  - [ ] 8.3 Preset question buttons answered from session results
     - _Requirements: 12_
 
 - [ ] 9. Voice output [NEXT]
-  - [~] 9.1 `voice/tts.py` with cache, 10-second timeout, language codes for Tamil and Hindi
+  - [ ] 9.1 `voice/tts.py` with cache, 10-second timeout, language codes for Tamil and Hindi
     - _Requirements: 14.1 to 14.3_
-  - [~] 9.2 Speaker button using `st.audio`, text fallback on failure
+  - [ ] 9.2 Speaker button using `st.audio`, text fallback on failure
     - _Requirements: 14.3, 14.4_
 
 - [ ] 10. Performance polish [NEXT]
-  - [~] 10.1 `st.cache_data` for CSV loading, loading indicators
+  - [ ] 10.1 `st.cache_data` for CSV loading, loading indicators
     - _Requirements: 18.1, 18.2_
 
-- [~] 11. Checkpoint: write 5 farmer test scenarios with expected outputs in `docs/phase-notes.md`
+- [ ] 11. Checkpoint: write 5 farmer test scenarios with expected outputs in `docs/phase-notes.md`
 
 - [ ] 12. Assistant with guardrail [STRETCH]
-  - [~] 12.1 `core/guardrail.py` `check_numbers` handling Indian formats, lakh/crore, Tamil and Devanagari digits, with tests
+  - [ ] 12.1 `core/guardrail.py` `check_numbers` handling Indian formats, lakh/crore, Tamil and Devanagari digits, with tests
     - _Requirements: 13.4_
-  - [~] 12.2 LLM wrapper with optional API key and preset fallback, typed input only
+  - [ ] 12.2 LLM wrapper with optional API key and preset fallback, typed input only
     - _Requirements: 13.1 to 13.3, 13.5_
 
 - [ ] 13. Export, feedback, voice input [STRETCH]
-  - [~] 13.1 WhatsApp text export from session results
+  - [ ] 13.1 WhatsApp text export from session results
     - _Requirements: 16_
-  - [~] 13.2 Feedback logging button
+  - [ ] 13.2 Feedback logging button
     - _Requirements: 17_
-  - [~] 13.3 Voice input with transcript confirmation and typing fallback
+  - [ ] 13.3 Voice input with transcript confirmation and typing fallback
     - _Requirements: 15_
 
 - [ ] 14. Deployment and documentation
-  - [~] 14.1 Deploy to a free host (verify current free-tier limits), set secrets in host settings
-  - [~] 14.2 Write `docs/assumptions.md`, architecture diagram, 15 viva questions with answers, field-test sheet
+  - [ ] 14.1 Deploy to a free host (verify current free-tier limits), set secrets in host settings
+  - [ ] 14.2 Write `docs/assumptions.md`, architecture diagram, 15 viva questions with answers, field-test sheet
     - _Requirements: 19.5_

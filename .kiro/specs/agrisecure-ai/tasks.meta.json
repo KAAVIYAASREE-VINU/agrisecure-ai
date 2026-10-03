@@ -259,6 +259,11 @@
         "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791048092003
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048436018
       }
     ],
     "5.2 `ui/i18n.py`: `t(key)` with English fallback and warning, with tests": [
@@ -266,6 +271,16 @@
         "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791034378460
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048447603
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048692334
       }
     ],
     "6.1 Language picker screen with session state": [
@@ -273,6 +288,16 @@
         "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791034378484
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048704164
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048837150
       }
     ],
     "6.2 Input screen: state, season, crop icon cards, land stepper, Calculate enable and disable": [
@@ -280,6 +305,16 @@
         "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791034378508
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048848207
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791049157547
       }
     ],
     "6.3 Results screen: top-3 crops with risk badges, cost breakdown with editable fields, funding gap, repayment window": [
@@ -287,6 +322,16 @@
         "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791034378538
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791049167925
+      },
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791049419112
       }
     ],
     "6.4 Lender comparison chart, risk meter, profit scenarios, break-even vs MSP, \"Why this number?\" expanders, loan disclaimer": [
@@ -434,6 +479,13 @@
         "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791047834209
+      }
+    ],
+    "5. Language files and i18n [MVP]": [
+      {
+        "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
+        "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
+        "timestamp": 1791048692382
       }
     ]
   }
