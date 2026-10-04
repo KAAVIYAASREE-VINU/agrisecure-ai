@@ -27,3 +27,6 @@ audio_cache/
 # Editor
 .vscode/
 .idea/
+
+.venv/
+.env
