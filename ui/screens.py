@@ -50,7 +50,7 @@ def _crop_i18n_key(crop_name: str) -> str:
 # Cached data helpers (st.cache_data lives here in the UI layer)
 # ---------------------------------------------------------------------------
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner="Loading crop data…")
 def _load_yield_price() -> "pd.DataFrame":  # type: ignore[name-defined]
     import pandas as pd
     from core.data_loader import load_yield_price
@@ -58,7 +58,7 @@ def _load_yield_price() -> "pd.DataFrame":  # type: ignore[name-defined]
     return load_yield_price(os.path.join(_root, "data", "yield_price.csv"))
 
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner="Loading cost data…")
 def _load_cost() -> "pd.DataFrame":  # type: ignore[name-defined]
     import pandas as pd
     from core.data_loader import load_cost
@@ -66,7 +66,7 @@ def _load_cost() -> "pd.DataFrame":  # type: ignore[name-defined]
     return load_cost(os.path.join(_root, "data", "cost.csv"))
 
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner="Loading MSP data…")
 def _load_msp() -> "pd.DataFrame":  # type: ignore[name-defined]
     import pandas as pd
     from core.data_loader import load_msp
@@ -85,19 +85,38 @@ def _lang() -> str:
 
 _MOBILE_CSS = """
 <style>
-/* Mobile-first layout: constrain width and centre */
+/* Mobile-first layout: 360 px wide, high contrast */
 .block-container {
     max-width: 360px !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
 }
-/* Make Streamlit buttons full-width and tall */
+body, .stApp {
+    color: #111 !important;
+    background: #fff !important;
+}
+/* Big tap targets for buttons */
 div.stButton > button {
     width: 100%;
-    min-height: 3.2rem;
-    font-size: 1.15rem;
+    min-height: 3.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    border-radius: 0.6rem;
+    border-radius: 0.5rem;
+    color: #111;
+}
+/* Risk badge pill */
+.risk-badge {
+    display: inline-block;
+    border-radius: 1rem;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+/* Section header */
+.section-header {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
 /* Crop card grid */
 .crop-card {
@@ -113,17 +132,11 @@ div.stButton > button {
     font-size: 0.88rem;
     text-align: center;
     min-height: 4.5rem;
-    transition: border-color 0.15s, background 0.15s;
 }
 .crop-card.selected {
     border-color: #2e7d32;
     background: #e8f5e9;
     font-weight: 700;
-}
-.crop-card .crop-emoji {
-    font-size: 1.8rem;
-    line-height: 1;
-    margin-bottom: 0.25rem;
 }
 </style>
 """
@@ -278,8 +291,10 @@ def show_input_screen() -> None:
     # -----------------------------------------------------------------------
     chosen_season: str | None = None
     if chosen_state:
-        state_df = df_yp[df_yp["state"] == chosen_state]
-        seasons = sorted(state_df["season"].unique().tolist())
+        df_cost_inp = _load_cost()
+        state_yp_seasons = set(df_yp[df_yp["state"] == chosen_state]["season"].unique())
+        state_cost_seasons = set(df_cost_inp[df_cost_inp["state"] == chosen_state]["season"].unique())
+        seasons = sorted(state_yp_seasons & state_cost_seasons)
 
         current_season = st.session_state.get("season")
         season_index = 0
@@ -458,7 +473,7 @@ def _run_calculations(lang: str) -> None:
 
     Satisfies Requirements 3.1–3.3, 4.1–4.2.
     """
-    from core.costs import estimate_costs
+    from core.costs import estimate_costs, NoDataError
     from core.crops import rank_top3
 
     state = st.session_state["state"]
@@ -472,14 +487,18 @@ def _run_calculations(lang: str) -> None:
     df_msp = _load_msp()
 
     # --- Cost estimate for the selected crop ---
-    cost_result = estimate_costs(
-        cost_df=df_cost,
-        crop=crop,
-        state=state,
-        season=season,
-        acres=acres,
-        overrides=overrides if overrides else None,
-    )
+    try:
+        cost_result = estimate_costs(
+            cost_df=df_cost,
+            crop=crop,
+            state=state,
+            season=season,
+            acres=acres,
+            overrides=overrides if overrides else None,
+        )
+    except NoDataError:
+        st.error(t("error_no_data", lang))
+        return
 
     # --- Top-3 crop ranking for state+season ---
     top3 = rank_top3(
@@ -1016,8 +1035,101 @@ def show_results_screen() -> None:
 
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
+
     # -----------------------------------------------------------------------
-    # 10. Footer
+    # 10. What-if analysis (task 7.1)
+    # -----------------------------------------------------------------------
+    st.markdown(
+        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"🔮 {t('whatif_header', lang)}</h3>",
+        unsafe_allow_html=True,
+    )
+
+    whatif = st.session_state.get("whatif")
+
+    col_w1, col_w2, col_w3, col_w4 = st.columns(4)
+    with col_w1:
+        if st.button(t("whatif_plus10", lang), key="btn_whatif_cost_up", use_container_width=True):
+            st.session_state["whatif"] = {"type": "cost_up", "factor": 1.2}
+            st.rerun()
+    with col_w2:
+        if st.button(t("whatif_minus10", lang), key="btn_whatif_income_down", use_container_width=True):
+            st.session_state["whatif"] = {"type": "income_down", "factor": 0.8}
+            st.rerun()
+    with col_w3:
+        if st.button("−0.5 acres", key="btn_whatif_less_land", use_container_width=True):
+            st.session_state["whatif"] = {"type": "less_land", "factor": max(0.1, acres - 0.5)}
+            st.rerun()
+    with col_w4:
+        if st.button(t("whatif_reset", lang), key="btn_whatif_reset", use_container_width=True):
+            st.session_state["whatif"] = None
+            st.rerun()
+
+    if whatif:
+        import core.crops as _wicm
+        df_yp_wi = _load_yield_price()
+        df_msp_wi = _load_msp()
+
+        wi_type = whatif["type"]
+        wi_factor = whatif["factor"]
+
+        # Baseline values (normal scenario from original computed_total / acres)
+        base_ps = _wicm.profit_scenarios(
+            crop=crop, state=state, season=season, land_acres=acres,
+            df_yield_price=df_yp_wi, df_msp=df_msp_wi, cost_override=computed_total,
+        )
+        base_normal = next((s for s in base_ps["scenarios"] if s["label"] == "normal"), None)
+        base_rev = base_normal["revenue_total"] if base_normal else 0.0
+        base_profit = base_normal["profit_total"] if base_normal else None
+
+        # Scenario values
+        if wi_type == "cost_up":
+            wi_cost = computed_total * wi_factor
+            wi_acres = acres
+        elif wi_type == "income_down":
+            wi_cost = computed_total
+            wi_acres = acres
+        else:  # less_land
+            wi_cost = computed_total * (wi_factor / acres) if acres > 0 else computed_total
+            wi_acres = wi_factor
+
+        wi_ps = _wicm.profit_scenarios(
+            crop=crop, state=state, season=season, land_acres=wi_acres,
+            df_yield_price=df_yp_wi, df_msp=df_msp_wi, cost_override=wi_cost,
+        )
+        wi_normal = next((s for s in wi_ps["scenarios"] if s["label"] == "normal"), None)
+        wi_rev_raw = wi_normal["revenue_total"] if wi_normal else 0.0
+        wi_rev = wi_rev_raw * wi_factor if wi_type == "income_down" else wi_rev_raw
+        wi_profit = (wi_rev - wi_cost) if wi_normal else None
+
+        col_base, col_scen = st.columns(2)
+        with col_base:
+            st.markdown(
+                f"<div style='background:#f0f4f8; border-radius:0.6rem; padding:0.7rem;'>"
+                f"<strong>{t('whatif_baseline_label', lang)}</strong><br>"
+                f"Cost: {indian_format(computed_total)}<br>"
+                f"Revenue: {indian_format(base_rev)}<br>"
+                f"Profit: {indian_format(base_profit) if base_profit is not None else '—'}"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+        with col_scen:
+            profit_col = "#27ae60" if (wi_profit or 0) >= 0 else "#c0392b"
+            st.markdown(
+                f"<div style='background:#fff8e1; border-radius:0.6rem; padding:0.7rem;'>"
+                f"<strong>{t('whatif_scenario_label', lang)}</strong><br>"
+                f"Cost: {indian_format(wi_cost)}<br>"
+                f"Revenue: {indian_format(wi_rev)}<br>"
+                f"Profit: <span style='color:{profit_col};font-weight:700;'>"
+                f"{indian_format(wi_profit) if wi_profit is not None else '—'}</span>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 11. Footer
     # -----------------------------------------------------------------------
     st.markdown("<hr style='margin:1rem 0 0.5rem 0;'>", unsafe_allow_html=True)
     st.caption(t("footer_data_note", lang))

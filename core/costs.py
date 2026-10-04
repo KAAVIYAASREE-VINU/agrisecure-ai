@@ -32,6 +32,11 @@ from data.clean_data import PLACEHOLDER_TAG
 
 
 # Ordered list of the five cost components (used throughout for consistency).
+class NoDataError(ValueError):
+    """Raised by estimate_costs when no CSV rows match the crop/state/season."""
+
+
+# Ordered list of the five cost components (used throughout for consistency).
 COST_COMPONENTS = ["seed", "fertilizer", "labour", "irrigation", "other"]
 
 
@@ -97,13 +102,13 @@ def estimate_costs(
     matching = cost_df[mask]
 
     # ------------------------------------------------------------------
-    # 2. No matching rows → return all-zero placeholder result
+    # 2. No matching rows → raise NoDataError (never return ₹0 silently)
     # ------------------------------------------------------------------
     if matching.empty:
-        result = {c: 0.0 for c in COST_COMPONENTS}
-        result["total"] = 0.0
-        result["placeholder"] = True
-        return result
+        raise NoDataError(
+            f"No cost data for crop=\'{crop}\', state=\'{state}\', season=\'{season}\'. "
+            "Verify the CSV contains matching rows or add placeholder data."
+        )
 
     # ------------------------------------------------------------------
     # 3. Compute mean of each component across matching rows, scale by acres

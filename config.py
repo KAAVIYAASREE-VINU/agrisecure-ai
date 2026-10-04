@@ -202,6 +202,15 @@ EXPORT_FORMAT = "whatsapp_text"
 # last_verified: 2024-01-15
 
 # ---------------------------------------------------------------------------
+# Data Quality Tag
+# ---------------------------------------------------------------------------
+
+PLACEHOLDER_TAG = "PLACEHOLDER – verify"
+# String written to the 'note' column of every estimated/unverified CSV row.
+# Must match the value in data/clean_data.py exactly.
+# last_verified: 2024-01-15
+
+# ---------------------------------------------------------------------------
 # Internal lookup dict — maps every public name above to its value.
 # get_config() uses this to satisfy Requirement 19.6.
 # ---------------------------------------------------------------------------
@@ -243,6 +252,8 @@ _CONFIG: dict = {
     "COST_COMPONENT_MIN":               COST_COMPONENT_MIN,
     # Export
     "EXPORT_FORMAT":                    EXPORT_FORMAT,
+    # Data Quality
+    "PLACEHOLDER_TAG":                  PLACEHOLDER_TAG,
 }
 
 

@@ -108,36 +108,28 @@ class TestNormalCase:
 # ---------------------------------------------------------------------------
 
 class TestNoMatchingRows:
-    def test_wrong_crop_returns_zeros(self):
-        """No data for the requested crop → all zeros, placeholder=True."""
+    """Task 7.4: estimate_costs raises NoDataError instead of returning zeros."""
+
+    def test_wrong_crop_raises_no_data_error(self):
+        """No data for the requested crop → NoDataError raised."""
+        from core.costs import NoDataError
         df = pd.DataFrame([_paddy_row()])
-        result = estimate_costs(df, "wheat", "Tamil Nadu", "Kuruvai", acres=1.0)
+        with pytest.raises(NoDataError):
+            estimate_costs(df, "wheat", "Tamil Nadu", "Kuruvai", acres=1.0)
 
-        for comp in COST_COMPONENTS:
-            assert result[comp] == 0.0
-        assert result["total"] == 0.0
-        assert result["placeholder"] is True
-
-    def test_wrong_season_returns_zeros(self):
-        """No data for the requested season → all zeros, placeholder=True."""
+    def test_wrong_season_raises_no_data_error(self):
+        """No data for the requested season → NoDataError raised."""
+        from core.costs import NoDataError
         df = pd.DataFrame([_paddy_row()])   # season = Kuruvai
-        result = estimate_costs(df, "paddy", "Tamil Nadu", "Rabi", acres=1.0)
+        with pytest.raises(NoDataError):
+            estimate_costs(df, "paddy", "Tamil Nadu", "Rabi", acres=1.0)
 
-        assert result["total"] == 0.0
-        assert result["placeholder"] is True
-
-    def test_wrong_state_returns_zeros(self):
-        """No data for the requested state → all zeros, placeholder=True."""
+    def test_wrong_state_raises_no_data_error(self):
+        """No data for the requested state → NoDataError raised."""
+        from core.costs import NoDataError
         df = pd.DataFrame([_paddy_row()])   # state = Tamil Nadu
-        result = estimate_costs(df, "paddy", "Maharashtra", "Kuruvai", acres=1.0)
-
-        assert result["total"] == 0.0
-        assert result["placeholder"] is True
-
-
-# ---------------------------------------------------------------------------
-# Multiple rows (mean)
-# ---------------------------------------------------------------------------
+        with pytest.raises(NoDataError):
+            estimate_costs(df, "paddy", "Maharashtra", "Kuruvai", acres=1.0)
 
 class TestMultipleRows:
     def test_mean_taken_across_years(self):
@@ -302,13 +294,12 @@ class TestPlaceholderFlag:
         result = estimate_costs(df, "paddy", "Tamil Nadu", "Kuruvai", acres=1.0)
         assert result["placeholder"] is False
 
-    def test_no_rows_always_placeholder(self):
-        """No matching rows always yields placeholder=True regardless of notes."""
+    def test_no_rows_raises_no_data_error(self):
+        """No matching rows raises NoDataError (task 7.4)."""
+        from core.costs import NoDataError
         df = pd.DataFrame([_paddy_row()])
-        result = estimate_costs(df, "wheat", "Tamil Nadu", "Kuruvai", acres=1.0)
-
-        assert result["placeholder"] is True
-
+        with pytest.raises(NoDataError):
+            estimate_costs(df, "wheat", "Tamil Nadu", "Kuruvai", acres=1.0)
 
 # ---------------------------------------------------------------------------
 # Edge cases
@@ -355,3 +346,36 @@ class TestEdgeCases:
         )
         expected = 1000 + 2000 + 9999 + 1000 + 500
         assert result["total"] == pytest.approx(expected)
+
+
+# ---------------------------------------------------------------------------
+# NoDataError (task 7.4)
+# ---------------------------------------------------------------------------
+
+class TestNoDataError:
+    def test_raises_no_data_error_when_no_rows_match(self):
+        """estimate_costs raises NoDataError when no CSV rows match the crop."""
+        from core.costs import NoDataError
+        # DataFrame has only paddy rows; calling with wheat should raise
+        rows = [_paddy_row(year=2021), _paddy_row(year=2022)]
+        df = pd.DataFrame(rows)
+        with pytest.raises(NoDataError):
+            estimate_costs(df, "wheat", "Tamil Nadu", "Kuruvai", acres=1.0)
+
+    def test_no_data_error_is_value_error_subclass(self):
+        """NoDataError is a subclass of ValueError for broad except clauses."""
+        from core.costs import NoDataError
+        assert issubclass(NoDataError, ValueError)
+
+    def test_error_message_contains_crop_state_season(self):
+        """NoDataError message names the missing crop, state, and season."""
+        from core.costs import NoDataError
+        df = pd.DataFrame([_paddy_row()])
+        try:
+            estimate_costs(df, "wheat", "Maharashtra", "Rabi", acres=1.0)
+            assert False, "Should have raised NoDataError"
+        except NoDataError as exc:
+            msg = str(exc)
+            assert "wheat" in msg
+            assert "Maharashtra" in msg
+            assert "Rabi" in msg
