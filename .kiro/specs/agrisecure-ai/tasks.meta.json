@@ -391,6 +391,21 @@
         "executionId": "83342c1e-205d-4a30-ac8b-aa946bb82b1b",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791034378758
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791085596507
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791086675405
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791090569027
       }
     ],
     "9.1 `voice/tts.py` with cache, 10-second timeout, language codes for Tamil and Hindi": [
@@ -496,6 +511,64 @@
         "executionId": "db11c5a0-594f-49fb-8afd-1b4b86c0e8d8",
         "chatSessionId": "sess_fa4b4ea5-3af7-4648-9637-462cbba7e9f6",
         "timestamp": 1791048692382
+      }
+    ],
+    "8.1 core/schemes.py eligibility rules (KCC, PM-KISAN, PMFBY) with tests; scheme text in language files": [
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791085596434
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791085606258
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791086038809
+      }
+    ],
+    "8.2 Scheme cards UI, greyed when ineligible, with \"Learn more\" links": [
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791085596473
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791086044437
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791086670288
+      }
+    ],
+    "8.4 voice/tts.py (cache, 10 s timeout, Tamil and Hindi codes) and a speaker button using st.audio with text fallback": [
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791085596533
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791090577434
+      },
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791091362285
+      }
+    ],
+    "8. RUN B: schemes, presets, voice": [
+      {
+        "executionId": "f62d378d-7099-4fb6-9cd3-4429de7c71d4",
+        "chatSessionId": "sess_a7a2636e-e773-4e1d-a279-4118691f81ed",
+        "timestamp": 1791091362320
       }
     ]
   }

@@ -597,6 +597,8 @@ def show_results_screen() -> None:
     _RISK_DOTS = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
     _RISK_LABELS = {"green": "risk_low", "yellow": "risk_medium", "red": "risk_high"}
 
+    from ui.speaker_button import render_speaker_button
+
     for entry in top3:
         crop_name: str = entry["crop"]
         rank: int = entry.get("rank", 0)
@@ -640,6 +642,18 @@ def show_results_screen() -> None:
             """,
             unsafe_allow_html=True,
         )
+
+        if is_selected:
+            # TTS summary for the top selected crop: crop name + risk + profit range
+            _tts_crop_summary = (
+                f"{crop_label}. {risk_label}. "
+                f"{t('funding_gap_label', lang)}: {rev_range_str}."
+            )
+            render_speaker_button(
+                text=_tts_crop_summary,
+                lang=lang,
+                button_key=f"tts_crop_{crop_name}",
+            )
 
     with st.expander("❓ " + t("why_risk", lang)):
         st.write(t("why_risk_text", lang))
@@ -907,6 +921,15 @@ def show_results_screen() -> None:
                 unsafe_allow_html=True,
             )
 
+        # TTS: read out risk label and DSCR score
+        from ui.speaker_button import render_speaker_button as _render_spkr_risk
+        _tts_risk_text = f"{t('risk_meter_header', lang)}: {risk_lbl}. DSCR: {dscr_value:.2f}."
+        _render_spkr_risk(
+            text=_tts_risk_text,
+            lang=lang,
+            button_key="tts_risk_meter",
+        )
+
     with st.expander("❓ " + t("why_dscr", lang)):
         st.write(t("why_dscr_text", lang))
 
@@ -1129,7 +1152,34 @@ def show_results_screen() -> None:
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
     # -----------------------------------------------------------------------
-    # 11. Footer
+    # 11. Government Schemes panel (task 8.2)
+    # -----------------------------------------------------------------------
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+    from ui.scheme_cards import render_scheme_cards
+    render_scheme_cards(
+        acres=acres,
+        crop=crop,
+        season=season,
+        lang=lang,
+    )
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 12. Preset question buttons (task 8.3)
+    # -----------------------------------------------------------------------
+    from ui.preset_buttons import render_preset_buttons
+    render_preset_buttons(
+        lang=lang,
+        df_yield_price=_load_yield_price(),
+        df_msp=_load_msp(),
+        df_cost=_load_cost(),
+    )
+
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # -----------------------------------------------------------------------
+    # 13. Footer
     # -----------------------------------------------------------------------
     st.markdown("<hr style='margin:1rem 0 0.5rem 0;'>", unsafe_allow_html=True)
     st.caption(t("footer_data_note", lang))

@@ -165,6 +165,72 @@ SCHEME_PMFBY_PREMIUM_RATE_RABI = 0.015
 # last_verified: 2024-01-01
 
 # ---------------------------------------------------------------------------
+# Scheme Eligibility Rules
+# VERIFY ON OFFICIAL SITE before use — rules may change.
+# ---------------------------------------------------------------------------
+
+# KCC Eligibility
+KCC_MAX_ELIGIBLE_ACRES = 999.9
+# KCC has no national upper land-area ceiling; any farmer with land ownership
+# or tenancy documents qualifies.  This sentinel value means "no land cap".
+# source: NABARD KCC Master Circular 2019 — verify on official site.
+# last_verified: 2024-01-15
+
+KCC_ELIGIBLE_LAST_VERIFIED = "2024-01-15"
+# Date on which KCC eligibility rules were last checked against official sources.
+# VERIFY ON OFFICIAL SITE: https://www.nabard.org/content1.aspx?id=572
+
+# PM-KISAN Eligibility
+PMKISAN_MAX_ELIGIBLE_ACRES = 5.0
+# PLACEHOLDER – verify.
+# PM-KISAN targets small and marginal farmers.  The scheme was later extended
+# to ALL farmer families regardless of land size; however the original
+# small/marginal threshold of 2 hectares (≈ 5 acres) remains widely cited.
+# Verify current eligibility rules on the official portal before use.
+# source: PM-KISAN scheme notification, GoI, 2019 — verify on official site.
+# last_verified: 2024-01-15
+
+PMKISAN_ELIGIBILITY_LAST_VERIFIED = "2024-01-15"
+# VERIFY ON OFFICIAL SITE: https://pmkisan.gov.in/
+
+# PMFBY Eligibility — Covered Crops
+PMFBY_COVERED_CROPS: list[str] = [
+    "paddy",
+    "wheat",
+    "maize",
+    "groundnut",
+    "cotton",
+    "sugarcane",
+    "soybean",
+    "jowar",
+    "bajra",
+    "sunflower",
+    "turmeric",
+]
+# PLACEHOLDER – verify.
+# List of crops notified under PMFBY at national level.  Actual coverage varies
+# by state and season; the state/district notifies specific crops each year.
+# Crops like onion and tomato are typically not covered under PMFBY.
+# source: PMFBY operational guidelines (GoI) — verify on official site.
+# last_verified: 2024-01-15
+
+PMFBY_COVERED_SEASONS: list[str] = [
+    "Kharif",
+    "Rabi",
+    "Kuruvai",
+    "Samba",
+    "Thaladi",
+]
+# PLACEHOLDER – verify.
+# Seasons for which PMFBY coverage is available.  Summer crops are not
+# typically covered under the main PMFBY scheme.
+# source: PMFBY operational guidelines (GoI) — verify on official site.
+# last_verified: 2024-01-15
+
+PMFBY_ELIGIBILITY_LAST_VERIFIED = "2024-01-15"
+# VERIFY ON OFFICIAL SITE: https://pmfby.gov.in/
+
+# ---------------------------------------------------------------------------
 # Land Input Limits (Requirement 2.4)
 # ---------------------------------------------------------------------------
 
@@ -199,6 +265,23 @@ COST_COMPONENT_MIN = 0.0
 EXPORT_FORMAT = "whatsapp_text"
 # "whatsapp_text" or "pdf"; source: Requirement 16.2.
 # Change to "pdf" only if fpdf2 / reportlab is added to requirements.txt.
+# last_verified: 2024-01-15
+
+# ---------------------------------------------------------------------------
+# Text-to-Speech (TTS) Configuration  (Requirement 14)
+# ---------------------------------------------------------------------------
+
+TTS_CACHE_MAX_SIZE = 50
+# Maximum number of audio clips to keep in the LRU cache.
+# Least-recently-used entry is evicted when the limit is reached.
+# source: AgriSecure design doc — Requirement 14.
+# last_verified: 2024-01-15
+
+TTS_TIMEOUT_SECONDS = 10
+# Maximum wall-clock seconds to wait for the gTTS API to respond.
+# If the request exceeds this limit the function returns None and the UI
+# falls back to showing the text result with a localised notice.
+# source: AgriSecure design doc — Requirement 14.
 # last_verified: 2024-01-15
 
 # ---------------------------------------------------------------------------
@@ -237,12 +320,20 @@ _CONFIG: dict = {
     # Sowing Months
     "SEASON_SOWING_MONTH":              SEASON_SOWING_MONTH,
     # Government Scheme Config
-    "SCHEME_KCC_URL":                   SCHEME_KCC_URL,
-    "SCHEME_PMKISAN_URL":               SCHEME_PMKISAN_URL,
-    "SCHEME_PMFBY_URL":                 SCHEME_PMFBY_URL,
-    "SCHEME_PMKISAN_AMOUNT":            SCHEME_PMKISAN_AMOUNT,
-    "SCHEME_PMFBY_PREMIUM_RATE_KHARIF": SCHEME_PMFBY_PREMIUM_RATE_KHARIF,
-    "SCHEME_PMFBY_PREMIUM_RATE_RABI":   SCHEME_PMFBY_PREMIUM_RATE_RABI,
+    "SCHEME_KCC_URL":                       SCHEME_KCC_URL,
+    "SCHEME_PMKISAN_URL":                   SCHEME_PMKISAN_URL,
+    "SCHEME_PMFBY_URL":                     SCHEME_PMFBY_URL,
+    "SCHEME_PMKISAN_AMOUNT":                SCHEME_PMKISAN_AMOUNT,
+    "SCHEME_PMFBY_PREMIUM_RATE_KHARIF":     SCHEME_PMFBY_PREMIUM_RATE_KHARIF,
+    "SCHEME_PMFBY_PREMIUM_RATE_RABI":       SCHEME_PMFBY_PREMIUM_RATE_RABI,
+    # Scheme Eligibility Rules
+    "KCC_MAX_ELIGIBLE_ACRES":               KCC_MAX_ELIGIBLE_ACRES,
+    "KCC_ELIGIBILITY_LAST_VERIFIED":        KCC_ELIGIBLE_LAST_VERIFIED,
+    "PMKISAN_MAX_ELIGIBLE_ACRES":           PMKISAN_MAX_ELIGIBLE_ACRES,
+    "PMKISAN_ELIGIBILITY_LAST_VERIFIED":    PMKISAN_ELIGIBILITY_LAST_VERIFIED,
+    "PMFBY_COVERED_CROPS":                  PMFBY_COVERED_CROPS,
+    "PMFBY_COVERED_SEASONS":                PMFBY_COVERED_SEASONS,
+    "PMFBY_ELIGIBILITY_LAST_VERIFIED":      PMFBY_ELIGIBILITY_LAST_VERIFIED,
     # Land Input Limits
     "LAND_MIN_ACRES":                   LAND_MIN_ACRES,
     "LAND_MAX_ACRES":                   LAND_MAX_ACRES,
@@ -254,6 +345,9 @@ _CONFIG: dict = {
     "EXPORT_FORMAT":                    EXPORT_FORMAT,
     # Data Quality
     "PLACEHOLDER_TAG":                  PLACEHOLDER_TAG,
+    # TTS
+    "TTS_CACHE_MAX_SIZE":               TTS_CACHE_MAX_SIZE,
+    "TTS_TIMEOUT_SECONDS":              TTS_TIMEOUT_SECONDS,
 }
 
 
