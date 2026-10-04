@@ -49,7 +49,7 @@ class TestGetConfigHappyPath:
         ("MONEYLENDER_RATE_MIN",              1.0),
         ("MONEYLENDER_RATE_MAX",            200.0),
         ("BANK_CROP_LOAN_RATE",               9.0),
-        ("KCC_RATE",                          4.0),
+        ("KCC_RATE",                          7.0),
         ("KCC_SCALE_OF_FINANCE_PER_ACRE", 15000.0),
         ("KCC_MAX_LOAN",                 300000.0),
         ("CV_GREEN_THRESHOLD",               0.20),

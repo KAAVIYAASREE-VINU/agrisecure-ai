@@ -3,7 +3,7 @@ tests/test_crops.py — AgriSecure AI
 =====================================
 
 Unit tests for core/crops.py:
-    available_crops, profit_scenarios, profit_range_per_acre, break_even_price
+    available_crops, profit_scenarios, revenue_range_per_acre, profit_range_per_acre, break_even_price
 
 Coverage
 --------
@@ -14,23 +14,25 @@ Normal cases
 - profit_scenarios applies MSP floor when market price < MSP
 - profit_scenarios includes gross revenue when no cost_override supplied
 - profit_scenarios includes net profit when cost_override supplied
-- profit_range_per_acre returns (min, max) tuple for normal data
+- revenue_range_per_acre returns (min, max) tuple for normal data (GROSS, no cost subtracted)
+- profit_range_per_acre returns (min, max) net profit tuple when cost_per_acre given
+- profit_range_per_acre returns None when cost_per_acre is None
 - break_even_price returns correct price for exact inputs
 
 Edge cases — fewer than 4 rows (MIN_RECORDS_FOR_COLOUR = 3)
 - profit_scenarios with 2 rows sets low_data=True and does not crash
 - profit_scenarios with 2 rows uses min/mean/max instead of quantiles
-- profit_range_per_acre with 2 rows still returns a tuple (not None)
+- revenue_range_per_acre with 2 rows still returns a tuple (not None)
 
 Edge cases — missing MSP
 - profit_scenarios with no MSP data sets msp_available=False
 - profit_scenarios with no MSP does not apply MSP floor
-- profit_range_per_acre with no MSP uses market price directly
+- revenue_range_per_acre with no MSP uses market price directly
 - available_crops with no matching data returns empty list
 
 Other edge cases
 - profit_scenarios with empty yield DataFrame sets no_data=True
-- profit_range_per_acre with empty yield DataFrame returns None
+- revenue_range_per_acre with empty yield DataFrame returns None
 - break_even_price raises ValueError for zero yield
 - break_even_price raises ValueError for negative yield
 - crop matching is case-insensitive
@@ -42,6 +44,7 @@ import pandas as pd
 from core.crops import (
     available_crops,
     profit_scenarios,
+    revenue_range_per_acre,
     profit_range_per_acre,
     break_even_price,
 )
@@ -374,36 +377,36 @@ class TestProfitScenariosNoData:
 # profit_range_per_acre
 # ---------------------------------------------------------------------------
 
-class TestProfitRangePerAcre:
+class TestRevenueRangePerAcre:
     def test_returns_tuple_for_normal_data(self):
         """Returns a (min, max) tuple when data exists."""
         df = _make_yp(_PADDY_5)
-        result = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        result = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert isinstance(result, tuple)
         assert len(result) == 2
 
     def test_max_greater_than_or_equal_min(self):
         """Max revenue >= min revenue."""
         df = _make_yp(_PADDY_5)
-        min_r, max_r = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        min_r, max_r = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert max_r >= min_r
 
     def test_returns_none_for_no_data(self):
         """Returns None when no matching rows exist."""
         df = _make_yp(_PADDY_5)
-        result = profit_range_per_acre("wheat", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        result = revenue_range_per_acre("wheat", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert result is None
 
     def test_returns_none_for_empty_dataframe(self):
         """Returns None for an empty DataFrame."""
         df = _make_yp([])
-        result = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        result = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert result is None
 
     def test_2_rows_still_returns_tuple(self):
         """With only 2 rows (low data), a tuple is still returned."""
         df = _make_yp(_PADDY_2)
-        result = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        result = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert result is not None
         assert isinstance(result, tuple)
         min_r, max_r = result
@@ -419,7 +422,7 @@ class TestProfitRangePerAcre:
         ]
         df = _make_yp(rows)
         msp_df = _make_msp([("paddy", 2024, 2000.0)])
-        min_r, max_r = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, msp_df)
+        min_r, max_r = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, msp_df)
         # Without MSP floor, min = 14.0 * 1500.0 = 21000
         # With MSP floor, min >= 14.0 * 2000.0 = 28000
         assert min_r >= 14.0 * 2000.0
@@ -427,7 +430,7 @@ class TestProfitRangePerAcre:
     def test_no_msp_uses_market_price(self):
         """When MSP is unavailable, market price is used directly."""
         df = _make_yp(_PADDY_5)
-        min_r, max_r = profit_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        min_r, max_r = revenue_range_per_acre("paddy", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         # Verify the min is computed from the P25 values (not zero or None)
         assert min_r > 0.0
         assert max_r > min_r
@@ -435,7 +438,7 @@ class TestProfitRangePerAcre:
     def test_case_insensitive_crop_match(self):
         """Crop name is matched case-insensitively."""
         df = _make_yp(_PADDY_5)
-        result = profit_range_per_acre("PADDY", "Tamil Nadu", "Kuruvai", df, _empty_msp())
+        result = revenue_range_per_acre("PADDY", "Tamil Nadu", "Kuruvai", df, _empty_msp())
         assert result is not None
 
 
@@ -477,6 +480,8 @@ class TestBreakEvenPrice:
 
 # ---------------------------------------------------------------------------
 # rank_top3
+# Changed in fix: dict keys now include min_profit_per_acre, max_profit_per_acre,
+# cost_per_acre is now required; passing None returns [].
 # ---------------------------------------------------------------------------
 
 from core.crops import rank_top3
@@ -508,20 +513,21 @@ class TestRankTop3:
     def test_returns_list(self):
         """rank_top3 always returns a list."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert isinstance(result, list)
 
     def test_normal_case_returns_up_to_3_results(self):
         """With 3+ crops, returns exactly 3 results."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert len(result) == 3
 
     def test_result_dict_keys(self):
         """Each result dict has the required keys."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         required_keys = {"crop", "min_revenue_per_acre", "max_revenue_per_acre",
+                         "min_profit_per_acre", "max_profit_per_acre",
                          "cv", "risk_colour", "rank"}
         for item in result:
             assert set(item.keys()) == required_keys
@@ -529,40 +535,40 @@ class TestRankTop3:
     def test_ranks_are_1_2_3(self):
         """Ranks are exactly 1, 2, 3 in order."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert [r["rank"] for r in result] == [1, 2, 3]
 
     def test_risk_colour_is_valid(self):
         """risk_colour is one of 'green', 'yellow', 'red'."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         for item in result:
             assert item["risk_colour"] in ("green", "yellow", "red")
 
     def test_cv_is_non_negative(self):
         """CV values are >= 0."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         for item in result:
             assert item["cv"] >= 0.0
 
     def test_max_revenue_gte_min_revenue(self):
-        """max_revenue_per_acre >= min_revenue_per_acre for every ranked crop."""
+        """max_revenue_per_acre >= min_revenue_per_acre for every ranked crop (gross)."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         for item in result:
             assert item["max_revenue_per_acre"] >= item["min_revenue_per_acre"]
 
     def test_no_crops_returns_empty(self):
         """No crops for state/season → []."""
         df = _make_multi_crop_yp()
-        result = rank_top3("Maharashtra", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Maharashtra", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert result == []
 
     def test_empty_dataframe_returns_empty(self):
         """Empty DataFrame → []."""
         df = _make_yp([])
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert result == []
 
     def test_fewer_than_3_crops_returns_all_with_correct_ranks(self):
@@ -576,7 +582,7 @@ class TestRankTop3:
             ("Tamil Nadu", "Kharif", "maize", 2020, 10.2, 1320.0),
         ]
         df = _make_yp(rows)
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert len(result) == 2
         assert [r["rank"] for r in result] == [1, 2]
 
@@ -588,7 +594,7 @@ class TestRankTop3:
             ("Tamil Nadu", "Kharif", "paddy", 2020, 16.0, 1850.0),
         ]
         df = _make_yp(rows)
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert len(result) == 1
         assert result[0]["rank"] == 1
 
@@ -616,7 +622,7 @@ class TestRankTop3:
             ("Tamil Nadu", "Kharif", "volatile_crop", 2021,  5.0, 2000.0),
         ]
         df = _make_yp(rows)
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert len(result) == 2
         rank1_crop = result[0]["crop"]
         assert rank1_crop == "safe_crop", (
@@ -644,7 +650,7 @@ class TestRankTop3:
             ("Tamil Nadu", "Kharif", "low_rev", 2021, 10.0, 1000.0),
         ]
         df = _make_yp(rows)
-        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp())
+        result = rank_top3("Tamil Nadu", "Kharif", 1.0, df, _empty_msp(), cost_per_acre=1000.0)
         assert len(result) == 2
         # Scores must be calculated consistently — verify ranks are 1 and 2
         assert result[0]["rank"] == 1

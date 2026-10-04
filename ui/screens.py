@@ -587,78 +587,87 @@ def show_results_screen() -> None:
     # -----------------------------------------------------------------------
     # 2. Top-3 crop recommendation cards
     # -----------------------------------------------------------------------
-    st.markdown(
-        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
-        f"🏆 {t('top_crops_header', lang)}</h3>",
-        unsafe_allow_html=True,
-    )
-
-    _RANK_BADGES = {1: "🥇", 2: "🥈", 3: "🥉"}
-    _RISK_DOTS = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
-    _RISK_LABELS = {"green": "risk_low", "yellow": "risk_medium", "red": "risk_high"}
-
-    from ui.speaker_button import render_speaker_button
-
-    for entry in top3:
-        crop_name: str = entry["crop"]
-        rank: int = entry.get("rank", 0)
-        risk_colour: str = entry.get("risk_colour", "red")
-        min_rev: float = entry.get("min_revenue_per_acre", 0.0)
-        max_rev: float = entry.get("max_revenue_per_acre", 0.0)
-
-        icon = _crop_icon(crop_name)
-        crop_label = t(_crop_i18n_key(crop_name), lang)
-        rank_badge = _RANK_BADGES.get(rank, "")
-        risk_dot = _RISK_DOTS.get(risk_colour, "🔴")
-        risk_label = t(_RISK_LABELS.get(risk_colour, "risk_unknown"), lang)
-
-        is_selected = crop_name.lower() == crop.lower()
-
-        # Card border colour: green highlight for the chosen crop
-        border_colour = "#2e7d32" if is_selected else "#ddd"
-        bg_colour = "#e8f5e9" if is_selected else "#fafafa"
-        selected_marker = "✅ " if is_selected else ""
-
-        rev_range_str = (
-            f"{indian_format(min_rev * acres)} – {indian_format(max_rev * acres)}"
-        )
-
+    if not top3:
+        st.info(t("cost_data_not_available", lang))
+    else:
         st.markdown(
-            f"""
-            <div style="border:2px solid {border_colour}; background:{bg_colour};
-                        border-radius:0.8rem; padding:0.8rem 1rem; margin-bottom:0.6rem;">
-              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
-                <span style="font-size:1.6rem; line-height:1;">{icon}</span>
-                <span style="font-size:1.05rem; font-weight:700;">{selected_marker}{rank_badge} {crop_label}</span>
-              </div>
-              <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.3rem;">
-                <span style="background:#fff; border:1px solid #ccc; border-radius:1rem;
-                             padding:0.15rem 0.6rem; font-size:0.85rem;">{risk_dot} {risk_label}</span>
-              </div>
-              <div style="font-size:0.82rem; color:#555;">
-                {t('funding_gap_label', lang)}: <strong>{rev_range_str}</strong>
-              </div>
-            </div>
-            """,
+            f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+            f"🏆 {t('top_crops_header', lang)}</h3>",
             unsafe_allow_html=True,
         )
-
-        if is_selected:
-            # TTS summary for the top selected crop: crop name + risk + profit range
-            _tts_crop_summary = (
-                f"{crop_label}. {risk_label}. "
-                f"{t('profit_range_label', lang)}: {rev_range_str}."
+    
+        _RANK_BADGES = {1: "🥇", 2: "🥈", 3: "🥉"}
+        _RISK_DOTS = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
+        _RISK_LABELS = {"green": "risk_low", "yellow": "risk_medium", "red": "risk_high"}
+    
+        from ui.speaker_button import render_speaker_button
+    
+        for entry in top3:
+            crop_name: str = entry["crop"]
+            rank: int = entry.get("rank", 0)
+            risk_colour: str = entry.get("risk_colour", "red")
+            min_rev: float = entry.get("min_revenue_per_acre", 0.0)
+            max_rev: float = entry.get("max_revenue_per_acre", 0.0)
+            min_profit: float | None = entry.get("min_profit_per_acre")
+            max_profit: float | None = entry.get("max_profit_per_acre")
+    
+            icon = _crop_icon(crop_name)
+            crop_label = t(_crop_i18n_key(crop_name), lang)
+            rank_badge = _RANK_BADGES.get(rank, "")
+            risk_dot = _RISK_DOTS.get(risk_colour, "🔴")
+            risk_label = t(_RISK_LABELS.get(risk_colour, "risk_unknown"), lang)
+    
+            is_selected = crop_name.lower() == crop.lower()
+    
+            # Card border colour: green highlight for the chosen crop
+            border_colour = "#2e7d32" if is_selected else "#ddd"
+            bg_colour = "#e8f5e9" if is_selected else "#fafafa"
+            selected_marker = "✅ " if is_selected else ""
+    
+            # Show profit range (revenue − cost); fall back gracefully when cost data absent
+            if min_profit is not None and max_profit is not None:
+                rev_range_str = (
+                    f"{indian_format(min_profit * acres)} – {indian_format(max_profit * acres)}"
+                )
+            else:
+                rev_range_str = t('cost_data_not_available', lang)
+    
+            st.markdown(
+                f"""
+                <div style="border:2px solid {border_colour}; background:{bg_colour};
+                            border-radius:0.8rem; padding:0.8rem 1rem; margin-bottom:0.6rem;">
+                  <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
+                    <span style="font-size:1.6rem; line-height:1;">{icon}</span>
+                    <span style="font-size:1.05rem; font-weight:700;">{selected_marker}{rank_badge} {crop_label}</span>
+                  </div>
+                  <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.3rem;">
+                    <span style="background:#fff; border:1px solid #ccc; border-radius:1rem;
+                                 padding:0.15rem 0.6rem; font-size:0.85rem;">{risk_dot} {risk_label}</span>
+                  </div>
+                  <div style="font-size:0.82rem; color:#555;">
+                    {t('funding_gap_label', lang)}: <strong>{rev_range_str}</strong>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
             )
-            render_speaker_button(
-                text=_tts_crop_summary,
-                lang=lang,
-                button_key=f"tts_crop_{crop_name}",
-            )
-
-    with st.expander("❓ " + t("why_risk", lang)):
-        st.write(t("why_risk_text", lang))
-
-    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+    
+            if is_selected:
+                # TTS summary for the top selected crop: crop name + risk + profit range
+                _tts_crop_summary = (
+                    f"{crop_label}. {risk_label}. "
+                    f"{t('profit_range_label', lang)}: {rev_range_str}."
+                )
+                render_speaker_button(
+                    text=_tts_crop_summary,
+                    lang=lang,
+                    button_key=f"tts_crop_{crop_name}",
+                )
+    
+        with st.expander("❓ " + t("why_risk", lang)):
+            st.write(t("why_risk_text", lang))
+    
+        st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
     # -----------------------------------------------------------------------
     # 3. Cost breakdown — editable fields
@@ -918,9 +927,10 @@ def show_results_screen() -> None:
         (s for s in _scenarios_for_dscr["scenarios"] if s["label"] == "normal"),
         None,
     )
-    normal_harvest_income = (
-        _normal_scenario["revenue_total"] if _normal_scenario is not None else 0.0
-    )
+    # DSCR uses NET income = normal-harvest revenue minus cost of cultivation.
+    # This is the amount actually available to repay the loan, not gross revenue.
+    _normal_revenue = _normal_scenario["revenue_total"] if _normal_scenario is not None else 0.0
+    normal_harvest_income = _normal_revenue - computed_total
 
     # repayment_obligation = gap (principal) + kcc interest
     kcc_cost_for_dscr = kcc_cost if gap > 0 else 0.0

@@ -42,11 +42,8 @@ BANK_CROP_LOAN_RATE = 9.0
 # effective 2024 — most commercial banks charge 8.5–10 %; 9 % used.
 # last_verified: 2024-01-15
 
-KCC_RATE = 4.0
-# % per year after 3 % interest subvention under GoI KCC scheme;
-# source: GoI KCC scheme circular 2023-24 (nominal 7 % minus 3 % subvention).
-# Subvention available only for prompt repayment and loans up to ₹3 lakh.
-# last_verified: 2024-01-15
+KCC_RATE = 7.0  # % per year, base rate (conservative, used in calculations)
+KCC_RATE_PROMPT_REPAYMENT = 4.0  # effective % only if repaid on time - PLACEHOLDER - verify for current FY
 
 # ---------------------------------------------------------------------------
 # KCC / Loan Limits
@@ -294,6 +291,21 @@ PLACEHOLDER_TAG = "PLACEHOLDER – verify"
 # last_verified: 2024-01-15
 
 # ---------------------------------------------------------------------------
+# Supported Crops — single source of truth
+# To add a 4th crop: append it here, then add rows to data/cost.csv,
+# data/yield_price.csv, and data/msp.csv.
+# ---------------------------------------------------------------------------
+
+SUPPORTED_CROPS: list[str] = [
+    "paddy",
+    "maize",
+    "groundnut",
+    # Add new crops here — one line each, lowercase, matching CSV crop column
+]
+# source: matches data/yield_price.csv, data/cost.csv crop values.
+# last_verified: 2024-01-15
+
+# ---------------------------------------------------------------------------
 # Internal lookup dict — maps every public name above to its value.
 # get_config() uses this to satisfy Requirement 19.6.
 # ---------------------------------------------------------------------------
@@ -345,6 +357,7 @@ _CONFIG: dict = {
     "EXPORT_FORMAT":                    EXPORT_FORMAT,
     # Data Quality
     "PLACEHOLDER_TAG":                  PLACEHOLDER_TAG,
+    "SUPPORTED_CROPS":                  SUPPORTED_CROPS,
     # TTS
     "TTS_CACHE_MAX_SIZE":               TTS_CACHE_MAX_SIZE,
     "TTS_TIMEOUT_SECONDS":              TTS_TIMEOUT_SECONDS,

@@ -75,7 +75,7 @@ def interest_costs(
     All rate constants are sourced from config.py with inline attribution.
     MONEYLENDER_RATE_DEFAULT = 36 % pa (RBI Financial Inclusion Survey 2021).
     BANK_CROP_LOAN_RATE     = 9  % pa (RBI base rate for agricultural loans).
-    KCC_RATE                = 4  % pa (GoI KCC scheme, after 3 % subvention).
+    KCC_RATE                = 4  % pa (effective, after 3 % subvention; base 7 %; on-time repayment only).
 
     Satisfies Requirements 6.1 and 6.2.
     """

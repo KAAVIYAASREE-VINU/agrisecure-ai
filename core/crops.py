@@ -2,8 +2,8 @@
 core/crops.py — AgriSecure AI
 ==============================
 
-CropAdvisor: query available crops, compute profit scenarios, profit range,
-and break-even price from yield/price history and MSP data.
+CropAdvisor: query available crops, compute profit scenarios, revenue range,
+profit range, and break-even price from yield/price history and MSP data.
 
 Design rules
 ------------
@@ -24,17 +24,29 @@ profit_scenarios(crop, state, season, land_acres, df_yield_price,
     Low / medium / high gross revenue and net profit per acre and total,
     plus a placeholder flag and a msp_available flag.
 
-profit_range_per_acre(crop, state, season, df_yield_price, df_msp) -> tuple[float, float] | None
-    (min_profit_per_acre, max_profit_per_acre) using bad/good scenario prices,
-    or None when there is insufficient data.
+revenue_range_per_acre(crop, state, season, df_yield_price, df_msp)
+    -> tuple[float, float] | None
+    (min_revenue_per_acre, max_revenue_per_acre) using bad/good scenario
+    prices, or None when there is insufficient data.  This is GROSS revenue —
+    costs are NOT subtracted.
+
+profit_range_per_acre(crop, state, season, df_yield_price, df_msp,
+                      cost_per_acre) -> tuple[float, float] | None
+    (min_profit_per_acre, max_profit_per_acre) = revenue range minus
+    cost_per_acre.  Returns None when cost_per_acre is None or data is
+    missing.  A loss-making scenario yields a negative value; never
+    substitutes revenue for profit.
 
 break_even_price(total_cost_per_acre, yield_per_acre) -> float
     Price per quintal at which the farmer exactly breaks even.
 
-rank_top3(state, season, land_acres, df_yield_price, df_msp, cost_per_acre=None) -> list[dict]
-    Top-3 crops ranked by a combined profit-and-risk score.
+rank_top3(state, season, land_acres, df_yield_price, df_msp,
+          cost_per_acre=None) -> list[dict]
+    Top-3 crops ranked by mean PROFIT per acre when cost_per_acre is given,
+    or returns [] when cost_per_acre is None.  A crop with no
+    revenue data is silently excluded.  The CV risk signal is unchanged.
 
-Requirements: 5.1, 5.2, 5.3, 5.4, 5.5 (profit scenarios and break-even)
+Requirements: 5.1–5.5 (profit scenarios and break-even)
              3.3 (top-3 crop ranking)
 """
 
@@ -64,15 +76,23 @@ def _latest_msp(df_msp: pd.DataFrame, crop: str) -> float | None:
     rows = df_msp[df_msp["crop"].str.lower() == crop.lower()]
     if rows.empty:
         return None
-    # Take the row with the highest year value.
     return float(rows.loc[rows["year"].idxmax(), "msp_per_quintal"])
 
 
 def _is_placeholder(df: pd.DataFrame) -> bool:
-    """True if any row in *df* has the PLACEHOLDER_TAG in the note column."""
-    if "note" not in df.columns:
+    """True if any row in *df* has the PLACEHOLDER_TAG in the note column
+    OR has a blank source_url (meaning the data source has not been verified).
+    Either condition is sufficient — both mean the value must be shown with
+    the PLACEHOLDER notice in the UI (Requirement G3, 3.4).
+    """
+    if df.empty:
         return False
-    return bool((df["note"] == PLACEHOLDER_TAG).any())
+    note_flag = "note" in df.columns and bool((df["note"] == PLACEHOLDER_TAG).any())
+    url_flag = (
+        "source_url" in df.columns
+        and bool((df["source_url"].fillna("").str.strip() == "").any())
+    )
+    return note_flag or url_flag
 
 
 # ---------------------------------------------------------------------------
@@ -181,9 +201,6 @@ def profit_scenarios(
     msp_value = _latest_msp(df_msp, crop)
     placeholder = _is_placeholder(rows)
 
-    # ------------------------------------------------------------------
-    # No data at all
-    # ------------------------------------------------------------------
     if rows.empty:
         return {
             "scenarios": [],
@@ -198,9 +215,6 @@ def profit_scenarios(
     prices = rows["price_per_quintal"]
     low_data = len(rows) < min_records
 
-    # ------------------------------------------------------------------
-    # Compute percentile (or min/mean/max when data is sparse)
-    # ------------------------------------------------------------------
     if low_data:
         y_bad    = float(yields.min())
         y_normal = float(yields.mean())
@@ -216,9 +230,6 @@ def profit_scenarios(
         p_normal = float(prices.quantile(0.50))
         p_good   = float(prices.quantile(0.75))
 
-    # ------------------------------------------------------------------
-    # Build scenarios, applying MSP floor
-    # ------------------------------------------------------------------
     scenario_data = [
         ("bad",    y_bad,    p_bad),
         ("normal", y_normal, p_normal),
@@ -260,22 +271,22 @@ def profit_scenarios(
 
 
 # ---------------------------------------------------------------------------
-# profit_range_per_acre
+# revenue_range_per_acre  (honest name: gross revenue, cost NOT subtracted)
 # ---------------------------------------------------------------------------
 
-def profit_range_per_acre(
+def revenue_range_per_acre(
     crop: str,
     state: str,
     season: str,
     df_yield_price: pd.DataFrame,
     df_msp: pd.DataFrame,
 ) -> tuple[float, float] | None:
-    """Return ``(min_profit_per_acre, max_profit_per_acre)`` for *crop*.
+    """Return ``(min_revenue_per_acre, max_revenue_per_acre)`` for *crop*.
 
     Uses the bad-scenario revenue (P25 yield × effective P25 price) as the
     minimum and good-scenario revenue (P75 yield × effective P75 price) as the
-    maximum.  Cost is not included, so these are gross-revenue extremes per
-    acre.
+    maximum.  Cost is NOT subtracted — these are GROSS revenue extremes per
+    acre.  Use ``profit_range_per_acre`` when you need net profit.
 
     Returns ``None`` when there is no data for the selection.
 
@@ -296,10 +307,6 @@ def profit_range_per_acre(
     -------
     tuple[float, float] | None
         ``(min_revenue_per_acre, max_revenue_per_acre)`` or ``None``.
-
-    Notes
-    -----
-    Satisfies Requirement 5.2: profit range for risk badge on crop cards.
     """
     rows = _filter_yield(df_yield_price, state, season, crop)
     if rows.empty:
@@ -326,6 +333,58 @@ def profit_range_per_acre(
     max_rev = y_max * eff_p_max
 
     return (min_rev, max_rev)
+
+
+# ---------------------------------------------------------------------------
+# profit_range_per_acre  (net profit = revenue − cost; may be negative)
+# ---------------------------------------------------------------------------
+
+def profit_range_per_acre(
+    crop: str,
+    state: str,
+    season: str,
+    df_yield_price: pd.DataFrame,
+    df_msp: pd.DataFrame,
+    cost_per_acre: float | None,
+) -> tuple[float, float] | None:
+    """Return ``(min_profit_per_acre, max_profit_per_acre)`` for *crop*.
+
+    Profit = revenue − cost.  A loss-making scenario yields a negative value.
+    Revenue is NEVER substituted for profit.
+
+    Returns ``None`` when ``cost_per_acre`` is ``None`` (cost data not yet
+    available) or when there is no yield/price data for the selection.
+
+    Parameters
+    ----------
+    crop : str
+        Crop name (case-insensitive).
+    state : str
+        State name.
+    season : str
+        Season name.
+    df_yield_price : pd.DataFrame
+        Loaded yield-price DataFrame.
+    df_msp : pd.DataFrame
+        Loaded MSP DataFrame.
+    cost_per_acre : float | None
+        Total cultivation cost per acre (₹).  If None, returns None — the
+        caller must show "cost data not available" instead of a profit figure.
+
+    Returns
+    -------
+    tuple[float, float] | None
+        ``(min_profit_per_acre, max_profit_per_acre)`` or ``None``.
+    """
+    if cost_per_acre is None:
+        return None
+
+    rev_range = revenue_range_per_acre(crop, state, season, df_yield_price, df_msp)
+    if rev_range is None:
+        return None
+
+    min_rev, max_rev = rev_range
+    return (min_rev - cost_per_acre, max_rev - cost_per_acre)
 
 
 # ---------------------------------------------------------------------------
@@ -377,38 +436,25 @@ def rank_top3(
     df_msp: pd.DataFrame,
     cost_per_acre: float | None = None,
 ) -> list[dict]:
-    """Return the top 3 crops ranked by a combined profit-and-risk score.
+    """Return the top 3 crops ranked by mean PROFIT (or revenue) per acre.
 
     Scoring methodology
     -------------------
-    For each crop we compute two raw signals:
+    1. **Profit signal** — when ``cost_per_acre`` is provided:
+          ``mean_profit = (min_profit_per_acre + max_profit_per_acre) / 2``
+       This is ``mean_revenue − cost_per_acre``, so a loss-making crop gets a
+       negative mean_profit and ranks below break-even crops.
 
-    1. **Expected revenue per acre** — the midpoint of the profit range:
-       ``mean_rev = (min_revenue_per_acre + max_revenue_per_acre) / 2``
-       using ``profit_range_per_acre()``, which already applies the MSP floor.
+       When ``cost_per_acre`` is None, ranking cannot proceed because profit
+       cannot be computed.  The function returns an empty list immediately
+       (``reason = "cost_data_missing"`` — but the list is empty so callers
+       must check for [] and show a "cost data not available" message).
 
-    2. **Coefficient of variation (CV)** — ``std / mean`` of all
-       historical per-acre revenue values (yield × price) for that crop,
-       state, and season.  Revenue is used rather than yield alone so the
-       price dimension is captured.  When fewer than MIN_RECORDS_FOR_COLOUR
-       rows exist, CV defaults to 1.0 (treated as maximum risk / red).
+    2. **CV risk signal** — unchanged: ``std / mean`` of historical per-acre
+       revenue, capped at 1.0 when fewer than MIN_RECORDS_FOR_COLOUR rows exist.
 
-    Both signals are min-max normalised across all candidate crops so they
-    are dimensionless and comparable on [0, 1]:
-
-        norm_rev  = (rev  - rev_min)  / (rev_max  - rev_min)   [higher → better]
-        norm_cv   = (cv   - cv_min)   / (cv_max   - cv_min)    [lower  → better]
-
-    When all crops have identical revenue (range = 0) or identical CV,
-    the normalised dimension is set to 0.5 for all (tie-neutral).
-
-    The combined score is a weighted sum:
-
-        score = 0.80 × norm_rev + 0.20 × (1 - norm_cv)
-
-    The 80/20 split prioritises revenue while still penalising high-risk
-    crops.  If all crops share the same revenue *and* the same CV, they are
-    ranked alphabetically as a deterministic tie-break.
+    Both signals are min-max normalised across candidates on [0, 1].
+    Score = 0.80 × norm_signal + 0.20 × (1 − norm_cv).
 
     Parameters
     ----------
@@ -417,17 +463,16 @@ def rank_top3(
     season : str
         Season name (whitespace-stripped; matched exactly).
     land_acres : float
-        Farm size in acres (passed through to ``profit_range_per_acre``).
-        ``profit_range_per_acre`` does not currently use ``land_acres`` but
-        the parameter is forwarded for forward-compatibility.
+        Farm size in acres (unused in current formula; retained for
+        forward-compatibility).
     df_yield_price : pd.DataFrame
-        Loaded yield-price DataFrame (from ``data_loader.load_yield_price``).
+        Loaded yield-price DataFrame.
     df_msp : pd.DataFrame
-        Loaded MSP DataFrame (from ``data_loader.load_msp``).
+        Loaded MSP DataFrame.
     cost_per_acre : float | None
-        Optional total cultivation cost per acre (₹).  Reserved for future
-        use; not used in the current scoring formula so that ranking works
-        even when the user has not entered costs yet.
+        Total cultivation cost per acre (₹).  **Required for ranking.**
+        When None, the function returns [] immediately — ranking on revenue
+        alone is not permitted.
 
     Returns
     -------
@@ -435,11 +480,17 @@ def rank_top3(
         Up to 3 dicts, each containing:
 
         ``crop``                  — crop name (str)
-        ``min_revenue_per_acre``  — float, bad-scenario revenue (₹/acre)
-        ``max_revenue_per_acre``  — float, good-scenario revenue (₹/acre)
+        ``min_revenue_per_acre``  — float, bad-scenario gross revenue (₹/acre)
+        ``max_revenue_per_acre``  — float, good-scenario gross revenue (₹/acre)
+        ``min_profit_per_acre``   — float | None, bad-scenario profit (₹/acre);
+                                    None when cost_per_acre is None
+        ``max_profit_per_acre``   — float | None, good-scenario profit (₹/acre);
+                                    None when cost_per_acre is None
         ``cv``                    — float, coefficient of variation of revenue
         ``risk_colour``           — "green" | "yellow" | "red"
         ``rank``                  — 1, 2, or 3
+        ``ranked_by``             — "profit" | "revenue" (documents which signal
+                                    was used)
 
         Returns [] if no crops are available for the selection.
 
@@ -451,36 +502,36 @@ def rank_top3(
 
     min_records = get_config("MIN_RECORDS_FOR_COLOUR")
 
-    # ------------------------------------------------------------------
-    # Step 1: get candidate crops
-    # ------------------------------------------------------------------
+    # Cost is required; ranking on revenue alone is not permitted.
+    if cost_per_acre is None:
+        return []  # reason: cost_data_missing
+
     crops = available_crops(state, season, df_yield_price)
     if not crops:
         return []
 
-    # ------------------------------------------------------------------
-    # Step 2: collect raw signals for each crop
-    # ------------------------------------------------------------------
     candidates: list[dict] = []
 
     for crop in crops:
-        # Revenue range (applies MSP floor internally)
-        rev_range = profit_range_per_acre(crop, state, season, df_yield_price, df_msp)
+        # Gross revenue range (applies MSP floor internally)
+        rev_range = revenue_range_per_acre(crop, state, season, df_yield_price, df_msp)
         if rev_range is None:
-            # Skip crops with no data (shouldn't happen given available_crops, but be safe)
+            # No yield/price data — skip (shouldn't happen given available_crops)
             continue
         min_rev, max_rev = rev_range
-        mean_rev = (min_rev + max_rev) / 2.0
 
-        # CV of per-acre revenue from raw data
+        # Profit = revenue − cost (cost is required; never substitute revenue)
+        min_profit = min_rev - cost_per_acre
+        max_profit = max_rev - cost_per_acre
+        mean_signal = (min_profit + max_profit) / 2.0
+
+        # CV of per-acre revenue from raw data (risk signal — unchanged)
         rows = _filter_yield(df_yield_price, state, season, crop)
         msp_value = _latest_msp(df_msp, crop)
 
         if len(rows) < min_records:
-            # Too few rows — treat as maximum risk
             cv = 1.0
         else:
-            # Revenue per-acre observation = yield * effective_price
             def _eff_price(p: float) -> float:
                 return max(p, msp_value) if msp_value is not None else p
 
@@ -498,46 +549,38 @@ def rank_top3(
 
         candidates.append(
             {
-                "crop": crop,
+                "crop":               crop,
                 "min_revenue_per_acre": min_rev,
                 "max_revenue_per_acre": max_rev,
-                "mean_rev": mean_rev,
-                "cv": cv,
-                "risk_colour": risk_colour,
+                "min_profit_per_acre":  min_profit,
+                "max_profit_per_acre":  max_profit,
+                "mean_signal":          mean_signal,
+                "cv":                   cv,
+                "risk_colour":          risk_colour,
             }
         )
 
     if not candidates:
         return []
 
-    # ------------------------------------------------------------------
-    # Step 3: min-max normalise revenue and CV across candidates
-    # ------------------------------------------------------------------
-    rev_values = [c["mean_rev"] for c in candidates]
-    cv_values  = [c["cv"]       for c in candidates]
+    signal_values = [c["mean_signal"] for c in candidates]
+    cv_values     = [c["cv"]          for c in candidates]
 
-    rev_min, rev_max = min(rev_values), max(rev_values)
-    cv_min,  cv_max  = min(cv_values),  max(cv_values)
+    sig_min, sig_max = min(signal_values), max(signal_values)
+    cv_min,  cv_max  = min(cv_values),     max(cv_values)
 
     def _norm(value: float, lo: float, hi: float) -> float:
         if hi == lo:
             return 0.5
         return (value - lo) / (hi - lo)
 
-    # ------------------------------------------------------------------
-    # Step 4: compute score and sort (descending)
-    # ------------------------------------------------------------------
     for c in candidates:
-        norm_rev = _norm(c["mean_rev"], rev_min, rev_max)
-        norm_cv  = _norm(c["cv"],       cv_min,  cv_max)
-        c["score"] = 0.80 * norm_rev + 0.20 * (1.0 - norm_cv)
+        norm_sig = _norm(c["mean_signal"], sig_min, sig_max)
+        norm_cv  = _norm(c["cv"],          cv_min,  cv_max)
+        c["score"] = 0.80 * norm_sig + 0.20 * (1.0 - norm_cv)
 
-    # Sort: higher score first; tie-break alphabetically by crop name
     candidates.sort(key=lambda c: (-c["score"], c["crop"]))
 
-    # ------------------------------------------------------------------
-    # Step 5: take top 3, assign ranks, strip internal fields
-    # ------------------------------------------------------------------
     top3 = candidates[:3]
     result = []
     for rank, c in enumerate(top3, start=1):
@@ -546,6 +589,8 @@ def rank_top3(
                 "crop":                 c["crop"],
                 "min_revenue_per_acre": c["min_revenue_per_acre"],
                 "max_revenue_per_acre": c["max_revenue_per_acre"],
+                "min_profit_per_acre":  c["min_profit_per_acre"],
+                "max_profit_per_acre":  c["max_profit_per_acre"],
                 "cv":                   c["cv"],
                 "risk_colour":          c["risk_colour"],
                 "rank":                 rank,

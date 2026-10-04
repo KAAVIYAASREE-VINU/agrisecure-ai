@@ -94,16 +94,25 @@ def dscr(annual_income: float, total_annual_debt_obligation: float) -> float:
     float
         Ratio of income to obligation.  Returns ``math.inf`` when
         *total_annual_debt_obligation* is zero (farmer has no debt —
-        safe by definition).  Never raises ZeroDivisionError.
+        safe by definition).  Returns ``0.0`` when *annual_income* is
+        zero or negative (net loss — cannot repay; maps to red).
+        Never raises ZeroDivisionError.
 
     Notes
     -----
     Per Requirement 8.3, a zero obligation is the "indeterminate / no loan"
     case; callers should check for math.inf before calling dscr_colour and
     show an "indeterminate" message instead.
+    When annual_income <= 0, the farmer is at a net loss and cannot repay;
+    the returned 0.0 maps to ``dscr_colour`` → 'red' without ambiguity.
     """
     if total_annual_debt_obligation == 0:
         return math.inf
+    # Net income <= 0 means the farmer cannot cover costs, let alone repay a
+    # loan.  Return 0.0 so dscr_colour maps this to 'red' without a
+    # divide-by-zero issue or a confusing negative ratio.
+    if annual_income <= 0:
+        return 0.0
     return annual_income / total_annual_debt_obligation
 
 
