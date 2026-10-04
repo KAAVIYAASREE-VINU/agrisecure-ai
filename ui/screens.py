@@ -243,9 +243,9 @@ def show_input_screen() -> None:
     # -----------------------------------------------------------------------
     # 1. Header — title + Back button
     # -----------------------------------------------------------------------
-    col_back, col_title = st.columns([1, 4])
+    col_back, col_title = st.columns([2, 3])
     with col_back:
-        if st.button(f"← {t('btn_back', lang)}", key="btn_back_to_lang"):
+        if st.button(f"← {t('btn_back', lang)}", key="btn_back_to_lang", use_container_width=True):
             st.session_state["screen"] = "lang"
             st.rerun()
     with col_title:
@@ -570,9 +570,9 @@ def show_results_screen() -> None:
     # -----------------------------------------------------------------------
     # 1. Header — title + Back button
     # -----------------------------------------------------------------------
-    col_back, col_title = st.columns([1, 4])
+    col_back, col_title = st.columns([2, 3])
     with col_back:
-        if st.button(f"← {t('btn_back', lang)}", key="btn_back_results"):
+        if st.button(f"← {t('btn_back', lang)}", key="btn_back_results", use_container_width=True):
             st.session_state["screen"] = "input"
             st.rerun()
     with col_title:
@@ -647,7 +647,7 @@ def show_results_screen() -> None:
             # TTS summary for the top selected crop: crop name + risk + profit range
             _tts_crop_summary = (
                 f"{crop_label}. {risk_label}. "
-                f"{t('funding_gap_label', lang)}: {rev_range_str}."
+                f"{t('profit_range_label', lang)}: {rev_range_str}."
             )
             render_speaker_button(
                 text=_tts_crop_summary,
@@ -789,7 +789,7 @@ def show_results_screen() -> None:
             f"font-size:1.05rem;'>"
             f"🌿 {t('harvest_window_months', lang)}: "
             f"<strong style='font-size:1.15rem; color:#2e7d32;'>{months}</strong> "
-            f"{'month' if months == 1 else 'months'}</div>",
+            f"{t('months_label', lang)}</div>",
             unsafe_allow_html=True,
         )
     else:
@@ -822,15 +822,49 @@ def show_results_screen() -> None:
         bank_cost = lender_costs["bank"]
         kcc_cost = lender_costs["kcc"]
 
-        # Build DataFrame for bar chart
-        chart_data = pd.DataFrame(
-            {
-                t("lender_moneylender", lang): [moneylender_cost],
-                t("lender_bank", lang): [bank_cost],
-                t("lender_kcc", lang): [kcc_cost],
-            }
+        # Build grouped bar chart — three side-by-side bars, each labelled,
+        # with the rupee value displayed on the bar.  Uses Altair directly so
+        # we control axis labels, colours, and value annotations precisely.
+        import altair as alt
+
+        _chart_rows = [
+            {"lender": t("lender_moneylender", lang), "interest": moneylender_cost, "color": "#e74c3c"},
+            {"lender": t("lender_bank", lang),        "interest": bank_cost,        "color": "#e67e22"},
+            {"lender": t("lender_kcc", lang),         "interest": kcc_cost,         "color": "#27ae60"},
+        ]
+        _chart_df = pd.DataFrame(_chart_rows)
+        _chart_df["label"] = _chart_df["interest"].apply(lambda v: indian_format(v))
+
+        _base = alt.Chart(_chart_df).encode(
+            x=alt.X(
+                "lender:N",
+                sort=[r["lender"] for r in _chart_rows],
+                axis=alt.Axis(labelAngle=0, title=None),
+            ),
+            color=alt.Color(
+                "lender:N",
+                scale=alt.Scale(
+                    domain=[r["lender"] for r in _chart_rows],
+                    range=[r["color"] for r in _chart_rows],
+                ),
+                legend=None,
+            ),
         )
-        st.bar_chart(chart_data)
+
+        _bars = _base.mark_bar(size=40).encode(
+            y=alt.Y(
+                "interest:Q",
+                axis=alt.Axis(title=None, format="~s"),
+            ),
+        )
+
+        _text = _base.mark_text(dy=-8, fontSize=11, fontWeight="bold").encode(
+            y=alt.Y("interest:Q"),
+            text=alt.Text("label:N"),
+        )
+
+        _lender_chart = (_bars + _text).properties(height=220).configure_view(strokeWidth=0)
+        st.altair_chart(_lender_chart, use_container_width=True)
 
         col_lbl, col_val = st.columns([3, 2])
         with col_lbl:
@@ -905,7 +939,7 @@ def show_results_screen() -> None:
     if dscr_value == _math.inf:
         st.markdown(
             "<div style='background:#e8f5e9; border-radius:0.6rem; padding:0.7rem 1rem;'>"
-            "🟢 No loan — safe</div>",
+            f"{t('dscr_no_loan', lang)}</div>",
             unsafe_allow_html=True,
         )
     else:
@@ -983,8 +1017,8 @@ def show_results_screen() -> None:
                 f"<div style='border:1px solid #ddd; border-radius:0.6rem; "
                 f"padding:0.6rem 0.8rem; margin-bottom:0.4rem; background:#fafafa;'>"
                 f"<span style='font-weight:700;'>{icon} {display_label}</span><br>"
-                f"<span style='font-size:0.9rem; color:#555;'>Revenue: <strong>{revenue}</strong> "
-                f"&nbsp;|&nbsp; Profit: "
+                f"<span style='font-size:0.9rem; color:#555;'>{t('revenue_label', lang)}: <strong>{revenue}</strong> "
+                f"&nbsp;|&nbsp; {t('profit_label', lang)}: "
                 f"<strong style='color:{profit_colour};'>{profit_str}</strong></span>"
                 f"</div>",
                 unsafe_allow_html=True,
@@ -1035,14 +1069,14 @@ def show_results_screen() -> None:
                     st.markdown(
                         f"<div style='background:#e8f5e9; border-radius:0.6rem; "
                         f"padding:0.5rem 0.8rem; margin-top:0.4rem; color:#1e8449;'>"
-                        f"✅ Break-even {indian_format(be_price)} &lt; MSP {indian_format(msp_val)} → Safe</div>",
+                        f"{t('breakeven_msp_safe', lang).replace('{be}', indian_format(be_price)).replace('{msp}', indian_format(msp_val))}</div>",
                         unsafe_allow_html=True,
                     )
                 else:
                     st.markdown(
                         f"<div style='background:#fdf2f8; border-radius:0.6rem; "
                         f"padding:0.5rem 0.8rem; margin-top:0.4rem; color:#c0392b;'>"
-                        f"⚠️ Break-even {indian_format(be_price)} &gt; MSP {indian_format(msp_val)} → Risky</div>",
+                        f"{t('breakeven_msp_risky', lang).replace('{be}', indian_format(be_price)).replace('{msp}', indian_format(msp_val))}</div>",
                         unsafe_allow_html=True,
                     )
         except ValueError:
@@ -1070,7 +1104,8 @@ def show_results_screen() -> None:
 
     whatif = st.session_state.get("whatif")
 
-    col_w1, col_w2, col_w3, col_w4 = st.columns(4)
+    # Two rows of two buttons so each has enough width on 360 px mobile
+    col_w1, col_w2 = st.columns(2)
     with col_w1:
         if st.button(t("whatif_plus10", lang), key="btn_whatif_cost_up", use_container_width=True):
             st.session_state["whatif"] = {"type": "cost_up", "factor": 1.2}
@@ -1079,8 +1114,9 @@ def show_results_screen() -> None:
         if st.button(t("whatif_minus10", lang), key="btn_whatif_income_down", use_container_width=True):
             st.session_state["whatif"] = {"type": "income_down", "factor": 0.8}
             st.rerun()
+    col_w3, col_w4 = st.columns(2)
     with col_w3:
-        if st.button("−0.5 acres", key="btn_whatif_less_land", use_container_width=True):
+        if st.button(t("whatif_less_land", lang), key="btn_whatif_less_land", use_container_width=True):
             st.session_state["whatif"] = {"type": "less_land", "factor": max(0.1, acres - 0.5)}
             st.rerun()
     with col_w4:
@@ -1130,9 +1166,9 @@ def show_results_screen() -> None:
             st.markdown(
                 f"<div style='background:#f0f4f8; border-radius:0.6rem; padding:0.7rem;'>"
                 f"<strong>{t('whatif_baseline_label', lang)}</strong><br>"
-                f"Cost: {indian_format(computed_total)}<br>"
-                f"Revenue: {indian_format(base_rev)}<br>"
-                f"Profit: {indian_format(base_profit) if base_profit is not None else '—'}"
+                f"{t('cost_total', lang)}: {indian_format(computed_total)}<br>"
+                f"{t('revenue_label', lang)}: {indian_format(base_rev)}<br>"
+                f"{t('profit_label', lang)}: {indian_format(base_profit) if base_profit is not None else '—'}"
                 f"</div>",
                 unsafe_allow_html=True,
             )
@@ -1141,9 +1177,9 @@ def show_results_screen() -> None:
             st.markdown(
                 f"<div style='background:#fff8e1; border-radius:0.6rem; padding:0.7rem;'>"
                 f"<strong>{t('whatif_scenario_label', lang)}</strong><br>"
-                f"Cost: {indian_format(wi_cost)}<br>"
-                f"Revenue: {indian_format(wi_rev)}<br>"
-                f"Profit: <span style='color:{profit_col};font-weight:700;'>"
+                f"{t('cost_total', lang)}: {indian_format(wi_cost)}<br>"
+                f"{t('revenue_label', lang)}: {indian_format(wi_rev)}<br>"
+                f"{t('profit_label', lang)}: <span style='color:{profit_col};font-weight:700;'>"
                 f"{indian_format(wi_profit) if wi_profit is not None else '—'}</span>"
                 f"</div>",
                 unsafe_allow_html=True,

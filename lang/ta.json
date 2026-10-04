@@ -1,12 +1,10 @@
 {
   "app_title": "AgriSecure AI",
   "app_subtitle": "இந்திய விவசாயிகளுக்கான சிறந்த பயிர் நிதி திட்டம்",
-
   "lang_picker": "மொழியை தேர்ந்தெடுக்கவும்",
   "lang_english": "English",
   "lang_tamil": "தமிழ்",
   "lang_hindi": "हिंदी",
-
   "input_title": "உங்கள் பயிர் நிதி திட்டத்தை தயாரிக்கவும்",
   "select_state": "மாநிலத்தை தேர்ந்தெடுக்கவும்",
   "select_season": "பருவத்தை தேர்ந்தெடுக்கவும்",
@@ -16,7 +14,6 @@
   "btn_calculate": "கணக்கிடு",
   "own_capital_label": "சொந்த மூலதனம் (₹)",
   "moneylender_rate_label": "உள்ளூர் கடன் தரும் விகிதம் (% ஆண்டுக்கு)",
-
   "crop_paddy": "நெல்",
   "crop_maize": "மக்காச்சோளம்",
   "crop_groundnut": "நிலக்கடலை",
@@ -30,14 +27,12 @@
   "crop_turmeric": "மஞ்சள்",
   "crop_onion": "வெங்காயம்",
   "crop_tomato": "தக்காளி",
-
   "season_kharif": "கரீஃப்",
   "season_rabi": "ரபி",
   "season_kuruvai": "குறுவை",
   "season_samba": "சம்பா",
   "season_thaladi": "தாளடி",
   "season_summer": "கோடை",
-
   "results_title": "உங்கள் பயிர் நிதி திட்டம்",
   "top_crops_header": "சிறந்த பயிர் பரிந்துரைகள்",
   "cost_breakdown_header": "செலவு விவரம்",
@@ -49,23 +44,19 @@
   "breakeven_header": "முத்திரை விலை (Break-Even)",
   "whatif_header": "என்ன ஆனால் பகுப்பாய்வு",
   "schemes_header": "நீங்கள் தகுதியான அரசு திட்டங்கள்",
-
   "risk_low": "குறைந்த ஆபத்து",
   "risk_medium": "நடுத்தர ஆபத்து",
   "risk_high": "அதிக ஆபத்து",
   "risk_unknown": "ஆபத்து தெரியவில்லை",
-
   "good_harvest": "நல்ல அறுவடை",
   "normal_harvest": "சாதாரண அறுவடை",
   "bad_harvest": "மோசமான அறுவடை",
-
   "cost_seed": "விதை",
   "cost_fertilizer": "உரம்",
   "cost_labour": "கூலி",
   "cost_irrigation": "நீர்ப்பாசனம்",
   "cost_other": "பிற செலவுகள்",
   "cost_total": "மொத்த செலவு",
-
   "lender_moneylender": "வட்டிக் கடன்காரர்",
   "lender_bank": "வங்கி கடன்",
   "lender_kcc": "KCC (கிசான் கிரெடிட் கார்டு)",
@@ -73,7 +64,6 @@
   "residual_gap_label": "மீதமான இடைவெளி (KCC-க்கு பிறகு)",
   "monthly_repayment_label": "மாதாந்திர திருப்பிச் செலுத்துதல்",
   "harvest_window_months": "அறுவடை காலம்",
-
   "why_cost": "இந்த செலவு ஏன்?",
   "why_profit": "இந்த லாபம் ஏன்?",
   "why_breakeven": "இந்த முத்திரை விலை ஏன்?",
@@ -82,7 +72,6 @@
   "why_funding_gap": "இந்த நிதி இடைவெளி ஏன்?",
   "why_lender_comparison": "கடன் கொடுப்பவர்களை ஏன் ஒப்பிட வேண்டும்?",
   "why_msp": "MSP என்றால் என்ன?",
-
   "why_cost_text": "இந்த மதிப்பீடு உங்கள் பயிர், மாநிலம் மற்றும் பருவத்திற்கான சராசரி உள்ளீட்டு செலவுகளை (விதை, உரம், கூலி, நீர்ப்பாசனம், மற்றும் பிற செலவுகள்) அரசு சாகுபடி செலவு தரவின் அடிப்படையில் கணக்கிடுகிறது.",
   "why_profit_text": "லாப சூழ்நிலைகள் வரலாற்று விளைச்சல் மற்றும் விலை தரவை பயன்படுத்துகின்றன. நல்ல அறுவடை 75வது சதவீதத்தையும், சாதாரண நடுத்தரத்தையும், மோசமான அறுவடை 25வது சதவீதத்தையும் பயன்படுத்துகிறது.",
   "why_breakeven_text": "முத்திரை விலை = மொத்த செலவு ÷ எதிர்பார்க்கப்படும் விளைச்சல் (குவிண்டால்). இந்த விலைக்கு மேல் விற்றால் லாபம் கிடைக்கும்.",
@@ -91,15 +80,12 @@
   "why_funding_gap_text": "நிதி இடைவெளி = மொத்த செலவு − சொந்த மூலதனம். இதுவே நீங்கள் கடன் வாங்க வேண்டிய தொகை. KCC வரம்பு இந்த இடைவெளியை குறைக்கிறது.",
   "why_lender_comparison_text": "வட்டி = முதல் × ஆண்டு விகிதம் × மாதங்கள் ÷ 12. மூன்று கடன் கொடுப்பவர்களுக்கும் ஒரே சூத்திரம் பயன்படுத்தப்படுகிறது, விகிதம் மட்டும் வேறுபடுகிறது.",
   "why_msp_text": "MSP (குறைந்தபட்ச ஆதரவு விலை) என்பது உங்கள் பயிருக்கு அரசு உத்தரவாதம் அளிக்கும் குறைந்தபட்ச விலை. சந்தை விலை MSP-க்கு கீழே விழுந்தால் அரசு MSP விலையில் கொள்முதல் செய்ய வேண்டும்.",
-
   "scheme_kcc_name": "கிசான் கிரெடிட் கார்டு (KCC)",
   "scheme_pmkisan_name": "PM-KISAN",
   "scheme_pmfby_name": "பிரதான் மந்திரி ஃபசல் பீமா யோஜனா (PMFBY)",
-
   "scheme_kcc_desc": "பயிர் உள்ளீடுகள் மற்றும் தொடர்புடைய செயல்பாடுகளுக்கு குறைந்த வட்டியில் கடன் சுழற்சி. நில உரிமை அல்லது குத்தகை ஆவணங்கள் உள்ள அனைத்து விவசாயிகளுக்கும் தகுதி உண்டு.",
   "scheme_pmkisan_desc": "சிறு மற்றும் குறு விவசாயிகளுக்கு ஆண்டுக்கு ₹6,000 நேரடி வருமான ஆதரவு, ₹2,000 வீதம் மூன்று தவணைகளில் வழங்கப்படும்.",
   "scheme_pmfby_desc": "இயற்கை பேரிடர்கள், பூச்சிகள் மற்றும் நோய்களால் ஏற்படும் இழப்புகளை ஈடுசெய்யும் மானிய பயிர் காப்பீடு. கரீஃப் பயிர்களுக்கு 2% மற்றும் ரபி பயிர்களுக்கு 1.5% பிரீமியம்.",
-
   "scheme_kcc_benefit": "PLACEHOLDER – verify: Get credit at just 4% per year (after subvention) for seeds, fertilizer, labour, and other crop costs.",
   "scheme_kcc_eligibility_1": "PLACEHOLDER – verify: Farmer must own or lease agricultural land.",
   "scheme_kcc_eligibility_2": "PLACEHOLDER – verify: All crop types are covered — no crop restriction at national level.",
@@ -111,7 +97,6 @@
   "scheme_kcc_eligible": "PLACEHOLDER – verify: You appear eligible for KCC based on your land size.",
   "scheme_kcc_ineligible_no_land": "PLACEHOLDER – verify: KCC requires land ownership or a valid lease document.",
   "scheme_kcc_ineligible_land_too_large": "PLACEHOLDER – verify: Land size is above the system limit — verify eligibility directly with your bank.",
-
   "scheme_pmkisan_benefit": "PLACEHOLDER – verify: Receive ₹6,000 per year directly into your bank account in three installments of ₹2,000.",
   "scheme_pmkisan_eligibility_1": "PLACEHOLDER – verify: Must be a farmer family with cultivable land in their name.",
   "scheme_pmkisan_eligibility_2": "PLACEHOLDER – verify: Land holding up to 5 acres (PLACEHOLDER – verify current rules on portal).",
@@ -123,7 +108,6 @@
   "scheme_pmkisan_eligible": "PLACEHOLDER – verify: You appear eligible for PM-KISAN based on your land size.",
   "scheme_pmkisan_ineligible_no_land": "PLACEHOLDER – verify: PM-KISAN requires cultivable land registered in the farmer's name.",
   "scheme_pmkisan_ineligible_land_too_large": "PLACEHOLDER – verify: Your land holding may exceed the PM-KISAN limit (PLACEHOLDER – verify on portal).",
-
   "scheme_pmfby_benefit": "PLACEHOLDER – verify: Get insurance coverage for your crop at a premium of only 2% (Kharif) or 1.5% (Rabi) of the sum insured.",
   "scheme_pmfby_eligibility_1": "PLACEHOLDER – verify: Must grow a notified crop in a notified area for that season.",
   "scheme_pmfby_eligibility_2": "PLACEHOLDER – verify: Both loanee and non-loanee farmers are eligible.",
@@ -135,40 +119,31 @@
   "scheme_pmfby_eligible": "PLACEHOLDER – verify: Your crop and season appear covered under PMFBY.",
   "scheme_pmfby_ineligible_crop_not_covered": "PLACEHOLDER – verify: Your crop is not in the list of PMFBY-covered crops (PLACEHOLDER – verify with your state agriculture department).",
   "scheme_pmfby_ineligible_season_not_covered": "PLACEHOLDER – verify: PMFBY coverage is not listed for this season. Summer crops are generally not covered.",
-
   "scheme_card_learn_more": "மேலும் அறிக ↗",
   "scheme_card_verify": "⚠ விண்ணப்பிப்பதற்கு முன் அதிகாரப்பூர்வ தளத்தில் சரிபார்க்கவும்.",
-
-  "whatif_plus10": "+10% விலை",
-  "whatif_minus10": "−10% விலை",
-  "whatif_reset": "மீட்டமை",
+  "whatif_plus10": "Costs +20% (NEEDS REVIEW)",
+  "whatif_minus10": "Income −20% (NEEDS REVIEW)",
+  "whatif_reset": "Reset (NEEDS REVIEW)",
   "whatif_baseline_label": "அடிப்படை",
   "whatif_scenario_label": "சூழ்நிலை",
-
   "you_asked": "நீங்கள் கேட்டது:",
   "extra_moneylender_cost": "KCC-வை விட வட்டிக் கடன்காரருக்கு கூடுதல் செலவு",
   "preset_q1": "இந்த பயிரை நான் வாங்க முடியுமா?",
   "preset_q2": "என் முத்திரை விலை என்ன?",
   "preset_q3": "எந்த கடன் விருப்பம் மலிவானது?",
-
   "preset_repay_label": "நான் சரியான நேரத்தில் திருப்பி செலுத்த முடியுமா?",
   "preset_rain_label": "மழை பெய்யாவிட்டால் என்ன ஆகும்?",
   "preset_moneylender_label": "வட்டிக் கடன்காரர் மதிப்புள்ளதா?",
-
   "preset_repay_green": "✅ ஆம் — உங்கள் DSCR {dscr} ஆகும். உங்கள் சாதாரண அறுவடை வருமானம் ({income}) உங்கள் திருப்பிச் செலுத்தும் கடமையை ({obligation}) வசதியாக மறைக்கிறது.",
   "preset_repay_yellow": "⚠️ நிச்சயமற்றது — உங்கள் DSCR {dscr} ஆகும். உங்கள் சாதாரண அறுவடை வருமானம் ({income}) கஷ்டப்பட்டு திருப்பிச் செலுத்தும் கடமையை ({obligation}) சந்திக்கிறது. மோசமான அறுவடை ஆபத்தை ஏற்படுத்தலாம்.",
   "preset_repay_red": "🔴 ஆபத்தில் — உங்கள் DSCR {dscr} ஆகும். உங்கள் சாதாரண அறுவடை வருமானம் ({income}) திருப்பிச் செலுத்தும் கடமையை ({obligation}) விட குறைவு. சிறிய கடனை பரிசீலிக்கவும்.",
   "preset_repay_no_loan": "🟢 கடன் தேவையில்லை — உங்கள் சொந்த மூலதனம் முழு செலவையும் சரிக்கும். திருப்பிச் செலுத்துவது கவலையில்லை.",
-
   "preset_rain_positive": "🟢 மோசமான அறுவடை ஆண்டிலும் கூட, திட்டமிட்ட வருமானம் {revenue} மற்றும் லாபம் +{profit} ஆகும். நீங்கள் லாபத்தில் இருப்பீர்கள்.",
   "preset_rain_negative": "🔴 மோசமான அறுவடை ஆண்டில் திட்டமிட்ட வருமானம் {revenue} — {profit} இழப்பு. உங்கள் செலவை ஈடுகட்ட முடியாது.",
-
   "preset_moneylender_extra": "💸 {principal} கடனுக்கு {months} மாதங்களுக்கு: வட்டிக் கடன்காரர் வட்டி {ml_cost}, KCC வட்டி {kcc_cost}. வட்டிக் கடன்காரர் {extra} அதிகமாக செலவாகும்.",
-
   "preset_missing_repay": "⚠️ முதலில் பயிர் நிதி திட்டத்தை முடிக்கவும் — திருப்பிச் செலுத்துதல் இப்போது கணக்கிட முடியாது.",
   "preset_missing_rain": "⚠️ முதலில் பயிர் நிதி திட்டத்தை முடிக்கவும் — மோசமான அறுவடை லாபம் இப்போது கணக்கிட முடியாது.",
   "preset_missing_moneylender": "⚠️ முதலில் பயிர் நிதி திட்டத்தை முடிக்கவும் — கடன் ஒப்பீடு இப்போது கணக்கிட முடியாது.",
-
   "error_rate_range": "வட்டி விகிதம் ஆண்டுக்கு 1% முதல் 100% வரை இருக்க வேண்டும்.",
   "error_no_data": "இந்த பயிர், மாநிலம் மற்றும் பருவ கலவைக்கு தரவு இல்லை. வேறு தேர்வு செய்யவும்.",
   "placeholder_notice": "⚠️ சில மதிப்புகள் தற்காலிக மதிப்பீடுகள் — பயன்படுத்துவதற்கு முன் சரிபார்க்கவும்.",
@@ -176,17 +151,27 @@
   "disclaimer_estimate": "அனைத்து எண்களும் வரலாற்று சராசரிகளின் மதிப்பீடுகள். உண்மையான செலவுகளும் விளைச்சலும் மாறுபடலாம்.",
   "error_missing_crop": "தொடர பயிரை தேர்ந்தெடுக்கவும்.",
   "error_zero_yield": "இந்த தேர்வுக்கு விளைச்சல் தரவு இல்லை. லாபம் அல்லது முத்திரை விலையை கணக்கிட முடியாது.",
-
-  "footer_data_note": "தரவு ஆதாரங்கள்: பொருளாதார மற்றும் புள்ளியியல் இயக்குனரகம், CACP MSP அட்டவணைகள், Agmarknet.",
+  "footer_data_note": "Planned data sources (PLACEHOLDER – verify): DES cost surveys, CACP MSP tables, Agmarknet price series. Not yet loaded. (NEEDS REVIEW)",
   "footer_placeholder_note": "PLACEHOLDER என்று குறிக்கப்பட்ட மதிப்புகள் மதிப்பீடுகள் மட்டுமே. நிதி முடிவுகளுக்கு முன் அதிகாரப்பூர்வ ஆதாரங்களுடன் சரிபார்க்கவும்.",
   "btn_feedback": "கருத்து தெரிவிக்கவும்",
   "feedback_thanks": "உங்கள் கருத்துக்கு நன்றி!",
-
   "btn_back": "பின்னால்",
   "btn_recalculate": "மீண்டும் கணக்கிடு",
   "btn_share_whatsapp": "WhatsApp-ல் பகிர்",
-
   "tts_button_label": "🔊 கேளுங்கள்",
   "tts_loading": "⏳ ஆடியோ ஏற்றப்படுகிறது…",
-  "tts_failed_notice": "ஆடியோ கிடைக்கவில்லை — மேலே உள்ள வாசகத்தை படிக்கவும்."
+  "tts_failed_notice": "ஆடியோ கிடைக்கவில்லை — மேலே உள்ள வாசகத்தை படிக்கவும்.",
+  "scheme_eligibility_label": "Eligibility (NEEDS REVIEW)",
+  "scheme_documents_label": "Documents needed (NEEDS REVIEW)",
+  "scheme_where_label": "Where to apply (NEEDS REVIEW)",
+  "profit_range_label": "Profit range (NEEDS REVIEW)",
+  "months_label": "months (NEEDS REVIEW)",
+  "acres_label": "acres (NEEDS REVIEW)",
+  "revenue_label": "Revenue (NEEDS REVIEW)",
+  "profit_label": "Profit (NEEDS REVIEW)",
+  "quick_questions_header": "Quick Questions (NEEDS REVIEW)",
+  "breakeven_msp_safe": "✅ Break-even {be} is below MSP {msp} — you should cover costs at MSP. (NEEDS REVIEW)",
+  "breakeven_msp_risky": "⚠️ Break-even {be} exceeds MSP {msp} — price risk if market falls. (NEEDS REVIEW)",
+  "dscr_no_loan": "🟢 No loan needed — costs are covered by your own capital. (NEEDS REVIEW)",
+  "whatif_less_land": "Less land (−0.5 ac) (NEEDS REVIEW)"
 }

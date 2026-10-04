@@ -3,6 +3,7 @@ ui/scheme_cards.py — AgriSecure AI
 ====================================
 
 Renders one card per government scheme (KCC, PM-KISAN, PMFBY).
+
 Cards show: name, benefit, eligibility points, documents needed, where to
 apply — all from the language file via t().
 
@@ -28,17 +29,12 @@ from core.schemes import (
     check_pmfby_eligibility,
 )
 
-# ---------------------------------------------------------------------------
-# Scheme definitions — all text keys come from lang/*.json
-# ---------------------------------------------------------------------------
-
 _PLACEHOLDER = "PLACEHOLDER – verify"
 
 
 def _safe_t(key: str, lang: str) -> str:
     """Return t(key, lang), substituting PLACEHOLDER if the key is absent."""
     val = t(key, lang)
-    # t() returns "[{key}]" for truly missing keys
     if val.startswith("[") and val.endswith("]"):
         return _PLACEHOLDER
     return val
@@ -58,22 +54,10 @@ def _scheme_card(
     reason_key: str,
     url: str,
 ) -> None:
-    """Render a single scheme card.
+    """Render a single scheme card using Streamlit native components only.
 
-    Parameters
-    ----------
-    lang:
-        Active language code.
-    name_key, benefit_key, documents_key, where_key, …:
-        i18n keys for each text field.
-    eligibility_keys:
-        List of i18n keys for eligibility bullet points.
-    eligible:
-        Whether the farmer is eligible.  Ineligible cards are visually greyed.
-    reason_key:
-        i18n key for the eligibility result sentence (shown below the name).
-    url:
-        "Learn More" URL from config.py; hidden when empty/None.
+    Uses st.container + st.markdown (prose, not raw HTML blocks) so the card
+    renders correctly and does not appear as an indented code block.
     """
     name = _safe_t(name_key, lang)
     benefit = _safe_t(benefit_key, lang)
@@ -82,98 +66,65 @@ def _scheme_card(
     learn_more_label = _safe_t(learn_more_label_key, lang)
     verify_note = _safe_t(verify_note_key, lang)
     reason = _safe_t(reason_key, lang)
-
     eligibility_points = [_safe_t(k, lang) for k in eligibility_keys]
 
-    # Visual style: grey out card when ineligible
     if eligible:
         border_color = "#2e7d32"
         bg_color = "#f6ffed"
         name_color = "#1e8449"
         status_icon = "✅"
-        opacity = "1"
     else:
         border_color = "#bbb"
         bg_color = "#f5f5f5"
         name_color = "#888"
         status_icon = "🚫"
-        opacity = "0.6"
 
-    # Build eligibility bullet list HTML
-    bullets_html = "".join(
-        f"<li style='font-size:0.85rem; margin-bottom:0.2rem;'>{point}</li>"
-        for point in eligibility_points
+    # Card header rendered without indentation so it is NOT treated as a code block.
+    # We use a single-line f-string (no leading spaces before the HTML tag).
+    card_html = (
+        f'<div style="border:2px solid {border_color};background:{bg_color};'
+        f'border-radius:0.8rem;padding:0.9rem 1rem;margin-bottom:0.8rem;">'
+        f'<div style="font-size:1.05rem;font-weight:700;color:{name_color};margin-bottom:0.3rem;">'
+        f'{status_icon} {name}'
+        f'</div>'
+        f'<div style="font-size:0.88rem;color:#555;margin-bottom:0.5rem;font-style:italic;">'
+        f'{reason}'
+        f'</div>'
+        f'<div style="font-size:0.9rem;font-weight:600;margin-bottom:0.3rem;">'
+        f'{benefit}'
+        f'</div>'
+        f'</div>'
     )
+    st.markdown(card_html, unsafe_allow_html=True)
 
-    # Build "Learn more" link HTML (hidden if URL is missing/empty)
-    learn_more_html = ""
-    if url and url.strip():
-        learn_more_html = (
-            f"<a href='{url}' target='_blank' rel='noopener noreferrer' "
-            f"style='display:inline-block; margin-top:0.5rem; font-size:0.85rem; "
-            f"font-weight:600; color:#1a5276; text-decoration:none; "
-            f"border:1px solid #1a5276; border-radius:0.4rem; "
-            f"padding:0.2rem 0.6rem;'>"
-            f"{learn_more_label}"
-            f"</a>"
-        )
+    # Detail rows in a collapsible expander to keep mobile view compact.
+    expander_label = f"📋 {name}"
+    with st.expander(expander_label):
+        st.markdown(f"**{t('scheme_eligibility_label', lang)}**")
+        for point in eligibility_points:
+            st.markdown(f"- {point}")
 
-    st.markdown(
-        f"""
-        <div style="
-            border: 2px solid {border_color};
-            background: {bg_color};
-            border-radius: 0.8rem;
-            padding: 0.9rem 1rem;
-            margin-bottom: 0.8rem;
-            opacity: {opacity};
-        ">
-            <div style="font-size:1.05rem; font-weight:700; color:{name_color};
-                        margin-bottom:0.3rem;">
-                {status_icon} {name}
-            </div>
-
-            <div style="font-size:0.88rem; color:#555; margin-bottom:0.5rem;
-                        font-style:italic;">
-                {reason}
-            </div>
-
-            <div style="font-size:0.9rem; font-weight:600; margin-bottom:0.3rem;">
-                {benefit}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    # Use an expander for the detail rows (always shown but collapsed by default)
-    # — keeps the card compact on mobile while allowing the user to expand
-    with st.expander(f"📋 {name} — " + t("scheme_card_verify", lang).replace("⚠ ", "")):
-        # Eligibility points
-        st.markdown("**Eligibility**")
-        st.markdown(f"<ul>{bullets_html}</ul>", unsafe_allow_html=True)
-
-        # Documents
-        st.markdown("**Documents needed**")
+        st.markdown(f"**{t('scheme_documents_label', lang)}**")
         st.write(documents)
 
-        # Where to apply
-        st.markdown("**Where to apply**")
+        st.markdown(f"**{t('scheme_where_label', lang)}**")
         st.write(where_to_apply)
 
-        # Verify note
         st.caption(verify_note)
 
-        # Learn more link
-        if learn_more_html:
+        if url and url.strip():
+            learn_more_html = (
+                f'<a href="{url}" target="_blank" rel="noopener noreferrer" '
+                f'style="display:inline-block;margin-top:0.5rem;font-size:0.85rem;'
+                f'font-weight:600;color:#1a5276;text-decoration:none;'
+                f'border:1px solid #1a5276;border-radius:0.4rem;padding:0.2rem 0.6rem;">'
+                f'{learn_more_label}'
+                f'</a>'
+            )
             st.markdown(learn_more_html, unsafe_allow_html=True)
 
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
 
 def render_scheme_cards(
     acres: float,
@@ -181,32 +132,13 @@ def render_scheme_cards(
     season: str,
     lang: str,
 ) -> None:
-    """Render the Government Schemes panel (Requirement 11).
-
-    Shows one card each for KCC, PM-KISAN, and PMFBY.  Eligibility is
-    determined by the core/schemes.py functions; ineligible cards are greyed
-    with the reason from the language file.
-
-    Parameters
-    ----------
-    acres:
-        Farmer's land size in acres.
-    crop:
-        Crop name (used by PMFBY eligibility check).
-    season:
-        Season name (used by PMFBY eligibility check).
-    lang:
-        Active language code (``"en"``, ``"ta"``, or ``"hi"``).
-    """
+    """Render the Government Schemes panel (Requirement 11)."""
     st.markdown(
-        f"<h3 style='font-size:1.1rem; margin-bottom:0.6rem;'>"
+        f"<h3 style='font-size:1.1rem;margin-bottom:0.6rem;'>"
         f"🏛️ {t('schemes_header', lang)}</h3>",
         unsafe_allow_html=True,
     )
 
-    # ------------------------------------------------------------------
-    # KCC
-    # ------------------------------------------------------------------
     kcc_result = check_kcc_eligibility(acres=acres, crop=crop)
     _scheme_card(
         lang=lang,
@@ -226,9 +158,6 @@ def render_scheme_cards(
         url=_safe_url("SCHEME_KCC_URL"),
     )
 
-    # ------------------------------------------------------------------
-    # PM-KISAN
-    # ------------------------------------------------------------------
     pmkisan_result = check_pmkisan_eligibility(acres=acres)
     _scheme_card(
         lang=lang,
@@ -248,9 +177,6 @@ def render_scheme_cards(
         url=_safe_url("SCHEME_PMKISAN_URL"),
     )
 
-    # ------------------------------------------------------------------
-    # PMFBY
-    # ------------------------------------------------------------------
     pmfby_result = check_pmfby_eligibility(crop=crop, season=season)
     _scheme_card(
         lang=lang,
@@ -270,7 +196,6 @@ def render_scheme_cards(
         url=_safe_url("SCHEME_PMFBY_URL"),
     )
 
-    # Verify notice footer
     st.caption(t("scheme_card_verify", lang))
 
 

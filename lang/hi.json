@@ -1,12 +1,10 @@
 {
   "app_title": "AgriSecure AI",
   "app_subtitle": "भारतीय किसानों के लिए स्मार्ट फसल वित्त",
-
   "lang_picker": "भाषा चुनें",
   "lang_english": "English",
   "lang_tamil": "தமிழ்",
   "lang_hindi": "हिंदी",
-
   "input_title": "अपनी फसल वित्त योजना बनाएं",
   "select_state": "राज्य चुनें",
   "select_season": "मौसम चुनें",
@@ -16,7 +14,6 @@
   "btn_calculate": "गणना करें",
   "own_capital_label": "अपनी पूंजी (₹)",
   "moneylender_rate_label": "स्थानीय साहूकार की दर (% प्रति वर्ष)",
-
   "crop_paddy": "धान",
   "crop_maize": "मक्का",
   "crop_groundnut": "मूंगफली",
@@ -30,14 +27,12 @@
   "crop_turmeric": "हल्दी",
   "crop_onion": "प्याज",
   "crop_tomato": "टमाटर",
-
   "season_kharif": "खरीफ",
   "season_rabi": "रबी",
   "season_kuruvai": "कुरुवई",
   "season_samba": "सांबा",
   "season_thaladi": "थलादी",
   "season_summer": "गर्मी",
-
   "results_title": "आपकी फसल वित्त योजना",
   "top_crops_header": "शीर्ष फसल सिफारिशें",
   "cost_breakdown_header": "लागत विवरण",
@@ -49,23 +44,19 @@
   "breakeven_header": "ब्रेक-ईवन मूल्य",
   "whatif_header": "क्या होगा अगर विश्लेषण",
   "schemes_header": "सरकारी योजनाएं जिनके लिए आप पात्र हो सकते हैं",
-
   "risk_low": "कम जोखिम",
   "risk_medium": "मध्यम जोखिम",
   "risk_high": "उच्च जोखिम",
   "risk_unknown": "जोखिम अज्ञात",
-
   "good_harvest": "अच्छी फसल",
   "normal_harvest": "सामान्य फसल",
   "bad_harvest": "खराब फसल",
-
   "cost_seed": "बीज",
   "cost_fertilizer": "खाद",
   "cost_labour": "मजदूरी",
   "cost_irrigation": "सिंचाई",
   "cost_other": "अन्य खर्च",
   "cost_total": "कुल लागत",
-
   "lender_moneylender": "साहूकार",
   "lender_bank": "बैंक ऋण",
   "lender_kcc": "KCC (किसान क्रेडिट कार्ड)",
@@ -73,7 +64,6 @@
   "residual_gap_label": "शेष अंतराल (KCC के बाद)",
   "monthly_repayment_label": "मासिक पुनर्भुगतान",
   "harvest_window_months": "कटाई का समय",
-
   "why_cost": "यह लागत क्यों?",
   "why_profit": "यह लाभ क्यों?",
   "why_breakeven": "यह ब्रेक-ईवन मूल्य क्यों?",
@@ -82,7 +72,6 @@
   "why_funding_gap": "यह वित्त अंतराल क्यों?",
   "why_lender_comparison": "ऋणदाताओं की तुलना क्यों करें?",
   "why_msp": "MSP क्या है?",
-
   "why_cost_text": "यह अनुमान सरकारी खेती लागत डेटा के आधार पर आपकी फसल, राज्य और मौसम के लिए औसत इनपुट लागत (बीज, खाद, मजदूरी, सिंचाई और अन्य खर्च) पर आधारित है।",
   "why_profit_text": "लाभ परिदृश्य ऐतिहासिक उपज और मूल्य डेटा का उपयोग करते हैं। अच्छी फसल 75वें प्रतिशत, सामान्य मध्यिका और खराब फसल 25वें प्रतिशत का उपयोग करती है।",
   "why_breakeven_text": "ब्रेक-ईवन मूल्य = कुल लागत ÷ अपेक्षित उपज (क्विंटल)। इस मूल्य से ऊपर बेचने पर लाभ होगा।",
@@ -91,15 +80,12 @@
   "why_funding_gap_text": "वित्त अंतराल = कुल लागत − अपनी पूंजी। यही वह राशि है जो आपको उधार लेनी है। KCC सीमा इस अंतराल को कम करती है।",
   "why_lender_comparison_text": "ब्याज = मूलधन × वार्षिक दर × महीने ÷ 12। सभी तीन ऋणदाताओं के लिए एक ही सूत्र का उपयोग किया जाता है, केवल दर अलग होती है।",
   "why_msp_text": "MSP (न्यूनतम समर्थन मूल्य) वह न्यूनतम मूल्य है जिसकी गारंटी सरकार आपकी फसल के लिए देती है। यदि बाजार मूल्य MSP से नीचे गिरता है तो सरकार MSP पर खरीद करती है।",
-
   "scheme_kcc_name": "किसान क्रेडिट कार्ड (KCC)",
   "scheme_pmkisan_name": "PM-KISAN",
   "scheme_pmfby_name": "प्रधान मंत्री फसल बीमा योजना (PMFBY)",
-
   "scheme_kcc_desc": "फसल इनपुट और संबद्ध गतिविधियों के लिए कम ब्याज पर रिवॉल्विंग क्रेडिट। भूमि स्वामित्व या पट्टा दस्तावेज वाले सभी किसान पात्र हैं।",
   "scheme_pmkisan_desc": "छोटे और सीमांत किसानों को ₹2,000 की तीन किस्तों में प्रति वर्ष ₹6,000 की प्रत्यक्ष आय सहायता।",
   "scheme_pmfby_desc": "प्राकृतिक आपदाओं, कीटों और बीमारियों से होने वाले नुकसान को कवर करने वाला सब्सिडाइज्ड फसल बीमा। खरीफ फसलों के लिए 2% और रबी फसलों के लिए 1.5% प्रीमियम।",
-
   "scheme_kcc_benefit": "PLACEHOLDER – verify: Get credit at just 4% per year (after subvention) for seeds, fertilizer, labour, and other crop costs.",
   "scheme_kcc_eligibility_1": "PLACEHOLDER – verify: Farmer must own or lease agricultural land.",
   "scheme_kcc_eligibility_2": "PLACEHOLDER – verify: All crop types are covered — no crop restriction at national level.",
@@ -111,7 +97,6 @@
   "scheme_kcc_eligible": "PLACEHOLDER – verify: You appear eligible for KCC based on your land size.",
   "scheme_kcc_ineligible_no_land": "PLACEHOLDER – verify: KCC requires land ownership or a valid lease document.",
   "scheme_kcc_ineligible_land_too_large": "PLACEHOLDER – verify: Land size is above the system limit — verify eligibility directly with your bank.",
-
   "scheme_pmkisan_benefit": "PLACEHOLDER – verify: Receive ₹6,000 per year directly into your bank account in three installments of ₹2,000.",
   "scheme_pmkisan_eligibility_1": "PLACEHOLDER – verify: Must be a farmer family with cultivable land in their name.",
   "scheme_pmkisan_eligibility_2": "PLACEHOLDER – verify: Land holding up to 5 acres (PLACEHOLDER – verify current rules on portal).",
@@ -123,7 +108,6 @@
   "scheme_pmkisan_eligible": "PLACEHOLDER – verify: You appear eligible for PM-KISAN based on your land size.",
   "scheme_pmkisan_ineligible_no_land": "PLACEHOLDER – verify: PM-KISAN requires cultivable land registered in the farmer's name.",
   "scheme_pmkisan_ineligible_land_too_large": "PLACEHOLDER – verify: Your land holding may exceed the PM-KISAN limit (PLACEHOLDER – verify on portal).",
-
   "scheme_pmfby_benefit": "PLACEHOLDER – verify: Get insurance coverage for your crop at a premium of only 2% (Kharif) or 1.5% (Rabi) of the sum insured.",
   "scheme_pmfby_eligibility_1": "PLACEHOLDER – verify: Must grow a notified crop in a notified area for that season.",
   "scheme_pmfby_eligibility_2": "PLACEHOLDER – verify: Both loanee and non-loanee farmers are eligible.",
@@ -135,40 +119,31 @@
   "scheme_pmfby_eligible": "PLACEHOLDER – verify: Your crop and season appear covered under PMFBY.",
   "scheme_pmfby_ineligible_crop_not_covered": "PLACEHOLDER – verify: Your crop is not in the list of PMFBY-covered crops (PLACEHOLDER – verify with your state agriculture department).",
   "scheme_pmfby_ineligible_season_not_covered": "PLACEHOLDER – verify: PMFBY coverage is not listed for this season. Summer crops are generally not covered.",
-
   "scheme_card_learn_more": "अधिक जानें ↗",
   "scheme_card_verify": "⚠ आवेदन करने से पहले आधिकारिक साइट पर सत्यापित करें।",
-
-  "whatif_plus10": "+10% मूल्य",
-  "whatif_minus10": "−10% मूल्य",
-  "whatif_reset": "रीसेट",
+  "whatif_plus10": "Costs +20% (NEEDS REVIEW)",
+  "whatif_minus10": "Income −20% (NEEDS REVIEW)",
+  "whatif_reset": "Reset (NEEDS REVIEW)",
   "whatif_baseline_label": "आधार रेखा",
   "whatif_scenario_label": "परिदृश्य",
-
   "you_asked": "आपने पूछा:",
   "extra_moneylender_cost": "KCC की तुलना में साहूकार का अतिरिक्त खर्च",
   "preset_q1": "क्या मैं यह फसल उगा सकता हूं?",
   "preset_q2": "मेरा ब्रेक-ईवन मूल्य क्या है?",
   "preset_q3": "कौन सा ऋण विकल्प सबसे सस्ता है?",
-
   "preset_repay_label": "क्या मैं समय पर चुका सकता हूं?",
   "preset_rain_label": "अगर बारिश नहीं हुई तो क्या होगा?",
   "preset_moneylender_label": "क्या साहूकार उचित है?",
-
   "preset_repay_green": "✅ हां — आपका DSCR {dscr} है। आपकी सामान्य फसल आय ({income}) आपकी चुकौती ({obligation}) को आराम से पूरा करती है।",
   "preset_repay_yellow": "⚠️ अनिश्चित — आपका DSCR {dscr} है। आपकी सामान्य फसल आय ({income}) मुश्किल से आपकी चुकौती ({obligation}) को पूरा करती है। खराब फसल से खतरा हो सकता है।",
   "preset_repay_red": "🔴 जोखिम में — आपका DSCR {dscr} है। आपकी सामान्य फसल आय ({income}) आपकी चुकौती ({obligation}) से कम है। छोटे ऋण पर विचार करें।",
   "preset_repay_no_loan": "🟢 कोई ऋण नहीं — आपकी अपनी पूंजी पूरी लागत को कवर करती है। चुकौती की चिंता नहीं।",
-
   "preset_rain_positive": "🟢 खराब फसल वर्ष में भी अनुमानित आय {revenue} है और लाभ +{profit} है। आप ब्रेक-ईवन से ऊपर रहेंगे।",
   "preset_rain_negative": "🔴 खराब फसल वर्ष में अनुमानित आय {revenue} है — {profit} का नुकसान। आप अपनी लागत वसूल नहीं कर पाएंगे।",
-
   "preset_moneylender_extra": "💸 {principal} के ऋण पर {months} महीनों के लिए: साहूकार का ब्याज {ml_cost} है, KCC का ब्याज {kcc_cost} है। साहूकार {extra} अधिक खर्च करता है।",
-
   "preset_missing_repay": "⚠️ पहले फसल वित्त योजना पूरी करें — चुकौती की अभी गणना नहीं हो सकती।",
   "preset_missing_rain": "⚠️ पहले फसल वित्त योजना पूरी करें — खराब फसल लाभ की अभी गणना नहीं हो सकती।",
   "preset_missing_moneylender": "⚠️ पहले फसल वित्त योजना पूरी करें — ऋणदाता तुलना की अभी गणना नहीं हो सकती।",
-
   "error_rate_range": "साहूकार की दर 1% से 100% प्रति वर्ष के बीच होनी चाहिए।",
   "error_no_data": "इस फसल, राज्य और मौसम के संयोजन के लिए कोई डेटा नहीं मिला। कृपया अलग चयन करें।",
   "placeholder_notice": "⚠️ कुछ मान अस्थायी अनुमान हैं — उपयोग से पहले सत्यापित करें।",
@@ -176,17 +151,27 @@
   "disclaimer_estimate": "सभी आंकड़े ऐतिहासिक औसत पर आधारित अनुमान हैं। वास्तविक लागत और उपज भिन्न हो सकती है।",
   "error_missing_crop": "जारी रखने के लिए कृपया फसल चुनें।",
   "error_zero_yield": "इस चयन के लिए उपज डेटा उपलब्ध नहीं है। लाभ या ब्रेक-ईवन की गणना नहीं हो सकती।",
-
-  "footer_data_note": "डेटा स्रोत: अर्थशास्त्र और सांख्यिकी निदेशालय, CACP MSP तालिकाएं, Agmarknet।",
+  "footer_data_note": "Planned data sources (PLACEHOLDER – verify): DES cost surveys, CACP MSP tables, Agmarknet price series. Not yet loaded. (NEEDS REVIEW)",
   "footer_placeholder_note": "PLACEHOLDER चिह्नित मान केवल अनुमान हैं। वित्तीय निर्णयों से पहले आधिकारिक स्रोतों से सत्यापित करें।",
   "btn_feedback": "फीडबैक दें",
   "feedback_thanks": "आपकी प्रतिक्रिया के लिए धन्यवाद!",
-
   "btn_back": "वापस",
   "btn_recalculate": "फिर से गणना करें",
   "btn_share_whatsapp": "WhatsApp पर शेयर करें",
-
   "tts_button_label": "🔊 सुनें",
   "tts_loading": "⏳ ऑडियो लोड हो रहा है…",
-  "tts_failed_notice": "ऑडियो उपलब्ध नहीं — कृपया ऊपर का पाठ पढ़ें।"
+  "tts_failed_notice": "ऑडियो उपलब्ध नहीं — कृपया ऊपर का पाठ पढ़ें।",
+  "scheme_eligibility_label": "Eligibility (NEEDS REVIEW)",
+  "scheme_documents_label": "Documents needed (NEEDS REVIEW)",
+  "scheme_where_label": "Where to apply (NEEDS REVIEW)",
+  "profit_range_label": "Profit range (NEEDS REVIEW)",
+  "months_label": "months (NEEDS REVIEW)",
+  "acres_label": "acres (NEEDS REVIEW)",
+  "revenue_label": "Revenue (NEEDS REVIEW)",
+  "profit_label": "Profit (NEEDS REVIEW)",
+  "quick_questions_header": "Quick Questions (NEEDS REVIEW)",
+  "breakeven_msp_safe": "✅ Break-even {be} is below MSP {msp} — you should cover costs at MSP. (NEEDS REVIEW)",
+  "breakeven_msp_risky": "⚠️ Break-even {be} exceeds MSP {msp} — price risk if market falls. (NEEDS REVIEW)",
+  "dscr_no_loan": "🟢 No loan needed — costs are covered by your own capital. (NEEDS REVIEW)",
+  "whatif_less_land": "Less land (−0.5 ac) (NEEDS REVIEW)"
 }
