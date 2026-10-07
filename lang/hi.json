@@ -175,5 +175,6 @@
   "dscr_no_loan": "🟢 No loan needed — costs are covered by your own capital. (NEEDS REVIEW)",
   "whatif_less_land": "Less land (−0.5 ac) (NEEDS REVIEW)",
   "cost_data_not_available": "Cost data not available (NEEDS REVIEW)",
-  "source_url_placeholder": "⚠ Source not verified — PLACEHOLDER, verify before use. (NEEDS REVIEW)"
+  "source_url_placeholder": "⚠ Source not verified — PLACEHOLDER, verify before use. (NEEDS REVIEW)",
+  "cost_data_source_note": "लागत: तमिलनाडु औसत, DES {year} डेटा। वर्तमान लागत अधिक हो सकती है। (NEEDS REVIEW)"
 }

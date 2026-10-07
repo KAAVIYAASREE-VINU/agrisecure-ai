@@ -337,31 +337,69 @@ class TestLoadMsp:
 
 
 # ---------------------------------------------------------------------------
-# Integration test: generate_placeholders → loaders
+# Integration test: synthetic CSVs → loaders
 # ---------------------------------------------------------------------------
 
-class TestIntegrationPlaceholdersAndLoaders:
+class TestIntegrationSyntheticCSVsAndLoaders:
+    """Verify that all three loaders accept correctly-formed CSV files.
+
+    generate_placeholders() was removed; we build minimal synthetic CSVs
+    directly so the test is self-contained and never touches live data.
     """
-    Run generate_placeholders() into a temp directory and confirm that all
-    three loaders can read the output without errors, and that each file
-    contains exactly 10 rows.
-    """
 
-    def test_placeholder_csvs_load_cleanly(self, tmp_path, monkeypatch):
-        """generate_placeholders() writes 10-row CSVs that the loaders accept."""
-        import data.clean_data as clean_mod
+    @staticmethod
+    def _write_synthetic_csvs(tmp_path):
+        import pandas as pd
 
-        # Redirect output paths to tmp_path so we don't overwrite real data
-        monkeypatch.setattr(clean_mod, "COST_OUT", str(tmp_path / "cost.csv"))
-        monkeypatch.setattr(clean_mod, "YIELD_PRICE_OUT", str(tmp_path / "yield_price.csv"))
-        monkeypatch.setattr(clean_mod, "MSP_OUT", str(tmp_path / "msp.csv"))
+        # cost.csv — 3 valid rows
+        pd.DataFrame({
+            "state":      ["Tamil Nadu"] * 3,
+            "season":     ["Kuruvai"] * 3,
+            "crop":       ["paddy", "maize", "groundnut"],
+            "year":       [2022, 2022, 2022],
+            "seed":       [1500.0, 1200.0, 2000.0],
+            "fertilizer": [3500.0, 3000.0, 2500.0],
+            "labour":     [6000.0, 4500.0, 5000.0],
+            "irrigation": [2500.0, 1800.0, 2000.0],
+            "other":      [1000.0,  900.0,  800.0],
+            "note":       ["DES 2022"] * 3,
+        }).to_csv(str(tmp_path / "cost.csv"), index=False)
 
-        clean_mod.generate_placeholders()
+        # yield_price.csv — 3 valid rows
+        pd.DataFrame({
+            "state":                  ["Tamil Nadu"] * 3,
+            "season":                 ["Kuruvai"] * 3,
+            "crop":                   ["paddy", "maize", "groundnut"],
+            "year":                   [2022, 2022, 2022],
+            "yield_quintal_per_acre": [15.0, 12.0, 9.0],
+            "price_per_quintal":      [2000.0, 1500.0, 5000.0],
+            "note":                   ["TN Crop Report"] * 3,
+        }).to_csv(str(tmp_path / "yield_price.csv"), index=False)
+
+        # msp.csv — 3 valid rows
+        pd.DataFrame({
+            "crop":            ["paddy", "maize", "groundnut"],
+            "year":            [2022, 2022, 2022],
+            "msp_per_quintal": [2015.0, 1962.0, 5850.0],
+            "note":            ["CACP 2022"] * 3,
+        }).to_csv(str(tmp_path / "msp.csv"), index=False)
+
+    def test_synthetic_csvs_load_cleanly(self, tmp_path):
+        """Loaders accept minimal valid CSVs without raising."""
+        self._write_synthetic_csvs(tmp_path)
 
         cost_df = load_cost(str(tmp_path / "cost.csv"))
-        yp_df = load_yield_price(str(tmp_path / "yield_price.csv"))
-        msp_df = load_msp(str(tmp_path / "msp.csv"))
+        yp_df   = load_yield_price(str(tmp_path / "yield_price.csv"))
+        msp_df  = load_msp(str(tmp_path / "msp.csv"))
 
-        assert len(cost_df) == 10, f"Expected 10 cost rows, got {len(cost_df)}"
-        assert len(yp_df) == 10, f"Expected 10 yield_price rows, got {len(yp_df)}"
-        assert len(msp_df) == 10, f"Expected 10 msp rows, got {len(msp_df)}"
+        assert len(cost_df) == 3
+        assert len(yp_df)   == 3
+        assert len(msp_df)  == 3
+
+    def test_loaders_return_dataframes(self, tmp_path):
+        """Each loader returns a pandas DataFrame."""
+        import pandas as pd
+        self._write_synthetic_csvs(tmp_path)
+        assert isinstance(load_cost(str(tmp_path / "cost.csv")), pd.DataFrame)
+        assert isinstance(load_yield_price(str(tmp_path / "yield_price.csv")), pd.DataFrame)
+        assert isinstance(load_msp(str(tmp_path / "msp.csv")), pd.DataFrame)

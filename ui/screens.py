@@ -735,6 +735,19 @@ def show_results_screen() -> None:
 
     st.caption(t("disclaimer_estimate", lang))
 
+    # Cost data source caption — year read from the CSV, never hardcoded.
+    _cost_df_src = _load_cost()
+    _mask = (
+        (_cost_df_src["state"].str.lower() == state.lower())
+        & (_cost_df_src["crop"].str.lower() == crop.lower())
+    )
+    _cost_rows = _cost_df_src[_mask]
+    if _cost_rows.empty:
+        _cost_rows = _cost_df_src  # fall back to all rows if no exact match
+    _cost_year = int(_cost_rows["year"].max()) if not _cost_rows.empty else ""
+    _cost_note_raw = t("cost_data_source_note", lang)
+    st.caption(_cost_note_raw.replace("{year}", str(_cost_year)))
+
     if costs.get("placeholder"):
         st.warning(t("placeholder_notice", lang))
 

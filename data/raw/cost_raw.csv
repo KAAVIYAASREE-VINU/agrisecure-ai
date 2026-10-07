@@ -1,4 +1,4 @@
 state,season,crop,year,seed,fertilizer,labour,irrigation,other,note
-Tamil Nadu,Kuruvai,paddy,2020,3210,2993,9808,1897,8256,DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source
-Tamil Nadu,Kuruvai,maize,2020,2441,3677,11230,844,6725,DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source
-Tamil Nadu,Rabi,groundnut,2020,5050,2405,12210,894,4848,DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source
+Tamil Nadu,Kuruvai,paddy,2020,3210,2993,9808,1897,8256,"DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source"
+Tamil Nadu,Kuruvai,maize,2020,2441,3677,11230,844,6725,"DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source"
+Tamil Nadu,Rabi,groundnut,2020,5050,2405,12210,894,4848,"DES 2020-21 via TNAU; season not in source; season assumed, not stated in DES source"

@@ -1,25 +1,28 @@
-crop,year,msp_per_quintal,note
-paddy,2018,1750,
-paddy,2019,1815,
-paddy,2020,1868,
-paddy,2021,1940,
-paddy,2022,2040,
-paddy,2023,2183,
-paddy,2024,2300,
-paddy,2025,2369,
-maize,2018,1700,
-maize,2019,1760,
-maize,2020,1850,
-maize,2021,1870,
-maize,2022,1962,
-maize,2023,2090,
-maize,2024,2225,
-maize,2025,2400,
-groundnut,2018,4890,
-groundnut,2019,5090,
-groundnut,2020,5275,
-groundnut,2021,5550,
-groundnut,2022,5850,
-groundnut,2023,6377,
-groundnut,2024,6783,
-groundnut,2025,7263,
+crop,year,msp_per_quintal,note,source_url,retrieved_date
+groundnut,2018,4890,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+groundnut,2019,5090,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+groundnut,2020,5275,PIB press release PRID=1628348; 2020-21 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=1628348,2026-10-07
+groundnut,2021,5550,DES Agriculture MSP statement (as on 12.12.2025); 2021-22 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+groundnut,2022,5850,DES Agriculture MSP statement (as on 12.12.2025); 2022-23 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+groundnut,2023,6377,DES Agriculture MSP statement (as on 12.12.2025); 2023-24 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+groundnut,2024,6783,DES Agriculture MSP statement (as on 12.12.2025); 2024-25 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+groundnut,2025,7263,DES Agriculture MSP statement (as on 12.12.2025); 2025-26 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+groundnut,2026,7517,PIB press release PRID=2260617; 2026-27 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260617,2026-10-07
+maize,2018,1700,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+maize,2019,1760,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+maize,2020,1850,PIB press release PRID=1628348; 2020-21 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=1628348,2026-10-07
+maize,2021,1870,DES Agriculture MSP statement (as on 12.12.2025); 2021-22 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+maize,2022,1962,DES Agriculture MSP statement (as on 12.12.2025); 2022-23 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+maize,2023,2090,DES Agriculture MSP statement (as on 12.12.2025); 2023-24 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+maize,2024,2225,DES Agriculture MSP statement (as on 12.12.2025); 2024-25 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+maize,2025,2400,DES Agriculture MSP statement (as on 12.12.2025); 2025-26 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+maize,2026,2410,PIB press release PRID=2260617; 2026-27 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260617,2026-10-07
+paddy,2018,1750,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+paddy,2019,1815,Plantix secondary source; not official — cross-checked against CACP % increases. Replace with PIB release if time permits.,https://plantix.net/en/blog/msp-minimum-support-price/,2026-10-07
+paddy,2020,1868,PIB press release PRID=1628348; 2020-21 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=1628348,2026-10-07
+paddy,2021,1940,DES Agriculture MSP statement (as on 12.12.2025); 2021-22 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+paddy,2022,2040,DES Agriculture MSP statement (as on 12.12.2025); 2022-23 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+paddy,2023,2183,DES Agriculture MSP statement (as on 12.12.2025); 2023-24 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+paddy,2024,2300,DES Agriculture MSP statement (as on 12.12.2025); 2024-25 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+paddy,2025,2369,DES Agriculture MSP statement (as on 12.12.2025); 2025-26 Kharif MSP,https://desagri.gov.in/wp-content/uploads/2025/12/MSP-Statement_English_As-on-12.12.2025.pdf,2026-10-07
+paddy,2026,2441,PIB press release PRID=2260617; 2026-27 Kharif MSP,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260617,2026-10-07

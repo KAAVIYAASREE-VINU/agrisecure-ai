@@ -175,5 +175,6 @@
   "dscr_no_loan": "🟢 No loan needed — costs are covered by your own capital.",
   "whatif_less_land": "Less land (−0.5 ac)",
   "cost_data_not_available": "Cost data not available",
-  "source_url_placeholder": "⚠ Source not verified — PLACEHOLDER, verify before use."
+  "source_url_placeholder": "⚠ Source not verified — PLACEHOLDER, verify before use.",
+  "cost_data_source_note": "Costs: Tamil Nadu average, DES {year} data. Current costs may be higher."
 }

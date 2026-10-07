@@ -84,6 +84,34 @@ agrisecure-ai/
 
 ---
 
+---
+
+## Deploy to Streamlit Community Cloud
+
+1. Push this repository to GitHub (the `data/*.csv` files must be present in
+   the repo, or the app will error on first run — commit them if they are
+   gitignored).
+
+2. Go to [share.streamlit.io](https://share.streamlit.io) and click
+   **New app**.
+
+3. Set:
+   - **Repository**: your GitHub repo URL
+   - **Branch**: `main`
+   - **Main file path**: `app.py`
+
+4. Add any secrets (e.g. `LLM_API_KEY`) under **Advanced settings → Secrets**
+   using the same key names as `.env.example`.
+
+5. Click **Deploy**. The app will be available at
+   `https://<your-slug>.streamlit.app`.
+
+**Notes:**
+- `runtime.txt` / `.python-version` pins Python 3.12.
+- `.streamlit/config.toml` sets `headless = true` (required for cloud).
+- Free-tier apps spin down after inactivity; the TTS audio cache resets on
+  cold start (this is expected and handled gracefully).
+
 ## Known limits
 
 - **Network**: Streamlit works best on 4G. 2G/3G connections may be slow to
