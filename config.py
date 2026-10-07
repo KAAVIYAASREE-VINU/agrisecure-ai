@@ -43,7 +43,12 @@ BANK_CROP_LOAN_RATE = 9.0
 # last_verified: 2024-01-15
 
 KCC_RATE = 7.0  # % per year, base rate (conservative, used in calculations)
-KCC_RATE_PROMPT_REPAYMENT = 4.0  # effective % only if repaid on time - PLACEHOLDER - verify for current FY
+KCC_RATE_PROMPT_REPAYMENT = 4.0
+# Effective rate after 3% prompt repayment incentive (interest subvention).
+# Applies to short-term crop loans up to ₹3 lakh (₹2 lakh for animal
+# husbandry/fisheries). Late repayment forfeits the incentive; full 7% applies.
+# source: PIB Cabinet decision 28 May 2025; RBI circular 13 Jan 2026.
+# last_verified: 2026-10-07
 
 # ---------------------------------------------------------------------------
 # KCC / Loan Limits
@@ -58,11 +63,12 @@ KCC_SCALE_OF_FINANCE_PER_ACRE = 15000.0
 # last_verified: 2024-01-15
 
 KCC_MAX_LOAN = 300000.0
-# ₹; PLACEHOLDER – verify.
-# source: RBI KCC Master Circular 2019 — no formal upper cap for crop loans
-# under KCC; ₹3 lakh cited as the interest-subvention threshold.
-# Actual sanction depends on land holding and crop value.
-# last_verified: 2024-01-15
+# ₹ — interest subvention threshold for short-term crop loans.
+# The 4% effective rate applies only to loans up to this amount.
+# There is no formal upper cap on the loan itself; actual sanction
+# depends on land holding, crop value, and bank assessment.
+# source: PIB Cabinet decision 28 May 2025; RBI circular 13 Jan 2026.
+# last_verified: 2026-10-07
 
 # ---------------------------------------------------------------------------
 # Risk Thresholds — Coefficient of Variation (CV)
@@ -134,8 +140,11 @@ SEASON_SOWING_MONTH: dict[str, int] = {
 # ---------------------------------------------------------------------------
 
 SCHEME_KCC_URL = "https://www.nabard.org/content1.aspx?id=572"
-# NABARD KCC page; mark PLACEHOLDER if URL changes.
-# last_verified: 2024-01-01
+# NABARD KCC information page.
+# For scheme details and current circulars see also:
+#   PIB Cabinet decision 28 May 2025
+#   RBI circular 13 Jan 2026
+# last_verified: 2026-10-07
 
 SCHEME_PMKISAN_URL = "https://pmkisan.gov.in/"
 # Official PM-KISAN portal.
@@ -151,15 +160,15 @@ SCHEME_PMKISAN_AMOUNT = 6000.0
 # last_verified: 2024-01-01
 
 SCHEME_PMFBY_PREMIUM_RATE_KHARIF = 0.02
-# 2 % of sum insured for Kharif crops;
-# source: PMFBY operational guidelines (farmer share of actuarial premium,
-# capped at 2 % for Kharif).
-# last_verified: 2024-01-01
+# Up to 2% of sum insured for Kharif food/oilseed crops (farmer share).
+# Centre and State pay the balance of the actuarial premium.
+# source: PIB PMFBY FAQ; pmfby.gov.in.
+# last_verified: 2026-10-07
 
 SCHEME_PMFBY_PREMIUM_RATE_RABI = 0.015
-# 1.5 % of sum insured for Rabi crops;
-# source: PMFBY operational guidelines (farmer share, capped at 1.5 % for Rabi).
-# last_verified: 2024-01-01
+# Up to 1.5% of sum insured for Rabi food/oilseed crops (farmer share).
+# source: PIB PMFBY FAQ; pmfby.gov.in.
+# last_verified: 2026-10-07
 
 # ---------------------------------------------------------------------------
 # Scheme Eligibility Rules
@@ -178,14 +187,13 @@ KCC_ELIGIBLE_LAST_VERIFIED = "2024-01-15"
 # VERIFY ON OFFICIAL SITE: https://www.nabard.org/content1.aspx?id=572
 
 # PM-KISAN Eligibility
-PMKISAN_MAX_ELIGIBLE_ACRES = 5.0
-# PLACEHOLDER – verify.
-# PM-KISAN targets small and marginal farmers.  The scheme was later extended
-# to ALL farmer families regardless of land size; however the original
-# small/marginal threshold of 2 hectares (≈ 5 acres) remains widely cited.
-# Verify current eligibility rules on the official portal before use.
-# source: PM-KISAN scheme notification, GoI, 2019 — verify on official site.
-# last_verified: 2024-01-15
+PMKISAN_MAX_ELIGIBLE_ACRES = 999.9
+# PM-KISAN has no land-size limit — all landholding farmer families with
+# cultivable land in their name are eligible (no upper acreage cap).
+# Sentinel value 999.9 means 'no cap' (matches KCC_MAX_ELIGIBLE_ACRES pattern).
+# Exclusions are status-based, not land-based: income-tax payers,
+# serving/retired government employees (Group A/B), institutional holders.
+# source: pmkisan.gov.in; last_verified: 2026-10-07
 
 PMKISAN_ELIGIBILITY_LAST_VERIFIED = "2024-01-15"
 # VERIFY ON OFFICIAL SITE: https://pmkisan.gov.in/

@@ -21,7 +21,7 @@ check_kcc_eligibility(acres, crop) -> dict
     KCC: open to all farmers with any land size.  Currently no crop restriction.
 
 check_pmkisan_eligibility(acres) -> dict
-    PM-KISAN: land-size based eligibility (PLACEHOLDER — verify).
+    PM-KISAN: no land-size cap; eligibility is status-based (source: pmkisan.gov.in).
 
 check_pmfby_eligibility(crop, season) -> dict
     PMFBY: based on whether the crop and season are notified under the scheme.
@@ -90,10 +90,11 @@ def check_kcc_eligibility(acres: float, crop: str) -> dict:
 def check_pmkisan_eligibility(acres: float) -> dict:
     """Check PM-KISAN eligibility for the given land size.
 
-    PM-KISAN provides ₹6,000/year to eligible farmer families.  Originally
-    targeted at small and marginal farmers (up to 2 hectares / ≈ 5 acres);
-    the scheme was later extended.  The PMKISAN_MAX_ELIGIBLE_ACRES threshold
-    in config.py is marked PLACEHOLDER — verify with the official portal.
+    PM-KISAN provides ₹6,000/year (3 × ₹2,000) to eligible farmer families.
+    There is no land-size limit — all landholding farmer families with
+    cultivable land in their name qualify.  Exclusions are status-based
+    (income-tax payers, government employees Group A/B, institutional holders).
+    PMKISAN_MAX_ELIGIBLE_ACRES in config.py is a sentinel (999.9) meaning no cap.
 
     Parameters
     ----------
@@ -107,9 +108,7 @@ def check_pmkisan_eligibility(acres: float) -> dict:
 
     Notes
     -----
-    Source: PM-KISAN scheme notification, GoI, 2019.
-    VERIFY ON OFFICIAL SITE: https://pmkisan.gov.in/
-    Rules last verified: see PMKISAN_ELIGIBILITY_LAST_VERIFIED in config.py.
+    Source: pmkisan.gov.in; last_verified: 2026-10-07.
     """
     if acres <= 0:
         return {

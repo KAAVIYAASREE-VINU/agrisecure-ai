@@ -113,19 +113,21 @@ class TestCheckPmkisanEligibility:
         _assert_result_shape(result)
         assert result["eligible"] is True
 
-    def test_above_limit_ineligible(self):
-        """Land above the PM-KISAN limit → ineligible."""
-        max_acres = get_config("PMKISAN_MAX_ELIGIBLE_ACRES")
-        result = check_pmkisan_eligibility(max_acres + 0.1)
+    def test_above_old_five_acre_threshold_now_eligible(self):
+        """PM-KISAN has no land-size cap — 6 acres (above old 5-acre threshold)
+        must now be eligible (source: pmkisan.gov.in; verified 2026-10-07).
+        """
+        result = check_pmkisan_eligibility(6.0)
         _assert_result_shape(result)
-        assert result["eligible"] is False
-        assert "land_too_large" in result["reason"]
+        assert result["eligible"] is True
 
-    def test_large_farm_ineligible(self):
-        """Large farm (20 acres) exceeds PM-KISAN limit."""
+    def test_large_farm_eligible_no_land_cap(self):
+        """PM-KISAN has no land-size cap — large farm (20 acres) is eligible.
+        source: pmkisan.gov.in; verified 2026-10-07.
+        """
         result = check_pmkisan_eligibility(20.0)
         _assert_result_shape(result)
-        assert result["eligible"] is False
+        assert result["eligible"] is True
 
     def test_zero_land_ineligible(self):
         """Zero land → ineligible for PM-KISAN."""
@@ -152,19 +154,21 @@ class TestCheckPmkisanEligibility:
         assert result["reason"] == "scheme_pmkisan_eligible"
 
     def test_ineligible_reason_key_contains_scheme_name(self):
-        """Ineligible reason key must contain 'pmkisan' for easy identification."""
-        result = check_pmkisan_eligibility(100.0)
+        """Ineligible reason key (zero land) must contain 'pmkisan'."""
+        result = check_pmkisan_eligibility(0.0)
         assert "pmkisan" in result["reason"]
 
-    def test_threshold_from_config(self):
-        """Eligibility boundary exactly matches PMKISAN_MAX_ELIGIBLE_ACRES."""
-        max_acres = get_config("PMKISAN_MAX_ELIGIBLE_ACRES")
-        below = check_pmkisan_eligibility(max_acres - 0.01)
-        at = check_pmkisan_eligibility(max_acres)
-        above = check_pmkisan_eligibility(max_acres + 0.01)
-        assert below["eligible"] is True
-        assert at["eligible"] is True
-        assert above["eligible"] is False
+    def test_no_land_cap_large_farms_eligible(self):
+        """PMKISAN_MAX_ELIGIBLE_ACRES is a sentinel meaning no real cap.
+        Farms of 0.1, 5, 50 and 500 acres must all be eligible.
+        source: pmkisan.gov.in; verified 2026-10-07.
+        """
+        for acres in [0.1, 5.0, 50.0, 500.0]:
+            result = check_pmkisan_eligibility(acres)
+            assert result["eligible"] is True, (
+                f"{acres} acres should be eligible under PM-KISAN (no land cap) "
+                f"but got: {result}"
+            )
 
 
 # ---------------------------------------------------------------------------
