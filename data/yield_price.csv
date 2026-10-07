@@ -1,11 +1,15 @@
-state,season,crop,year,yield_quintal_per_acre,price_per_quintal,note,source_url,retrieved_date
-Tamil Nadu,Kuruvai,paddy,2018,14.0,1720.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,paddy,2019,15.5,1780.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,paddy,2020,16.0,1840.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,paddy,2021,15.0,1950.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,paddy,2022,17.5,2050.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,maize,2020,12.0,1360.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,maize,2021,14.5,1420.0,PLACEHOLDER – verify,,
-Tamil Nadu,Kuruvai,maize,2022,15.5,1480.0,PLACEHOLDER – verify,,
-Tamil Nadu,Rabi,groundnut,2021,9.0,4850.0,PLACEHOLDER – verify,,
-Tamil Nadu,Rabi,groundnut,2022,10.5,5050.0,PLACEHOLDER – verify,,
+state,season,crop,year,yield_quintal_per_acre,price_per_quintal,note
+Tamil Nadu,Kuruvai,paddy,2018,21.51,1708.91,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2019,23.01,1828.59,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2020,20.42,1790.94,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2021,21.54,1586.82,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2022,21.14,1807.09,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2023,20.26,2135.04,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,paddy,2024,19.86,2172.84,"Yield: TN Season and Crop Report, rice converted to paddy at 0.67; price: CEDA Sep-Oct avg"
+Tamil Nadu,Kuruvai,maize,2018,29.37,1450.11,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2019,31.72,2176.41,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2020,25.94,1440.76,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2021,28.6,1870.35,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2022,28.36,2208.16,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2023,25.25,2214.56,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
+Tamil Nadu,Kuruvai,maize,2024,22.21,2792.84,Yield: TN Season and Crop Report; price: CEDA Sep-Oct avg
